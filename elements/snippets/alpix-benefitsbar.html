@@ -1,0 +1,25 @@
+<div id="benefits">
+    <div class="container">
+        <div class="d-flex slick-this py-3 justify-content-between">
+            {% for i in 1..4 %}
+            <div class="col-auto">
+                <div class="d-flex row align-items-center justify-content-center">
+                    <div class="col-auto pr-1">
+                        {% if settings['benefits_img_'~i] %}
+                            <img src="{{ themePath }}{{ settings['benefits_img_'~i] }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-auto">
+                        {% if settings['benefits_title_'~i] %}
+                            <strong class="font-weight-bold text-uppercase">{{settings['benefits_title_'~i]}}</strong>
+                        {% endif %}
+                        {% if settings['benefits_desc_'~i] %}
+                            <p class='mb-0'>{{settings['benefits_desc_'~i]}}</p>
+                        {% endif %}
+                    </div>
+                </div>                                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

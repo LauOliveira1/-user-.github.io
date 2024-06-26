@@ -1,0 +1,39 @@
+{% set list_type                = 'snippets/alpix-product-snippets-' ~ product_list_type %}
+{% set product_list_col         = settings.product_list_type_col|default(3) %}
+{% set catalog_list_col         = settings.catalog_list_type_col|default(4) %}
+{% set search_list_col          = settings.search_list_type_col|default(4) %}
+{% set related_list_col         = settings.related_list_type_col|default(3) %}
+
+{% if pages.current == "search" %}
+    {% set xs = settings.search_list_type_col_xs %}
+    {% set sm = settings.search_list_type_col_sm %}
+    {% set lg = settings.search_list_type_col_lg %}
+{% elseif pages.current == "product" %}
+    {% set xs = settings.related_list_type_col_xs %}
+    {% set sm = settings.related_list_type_col_sm %}
+    {% set lg = settings.related_list_type_col_lg %}
+{% elseif pages.current == "catalog" %}
+    {% set xs = settings.catalog_list_type_col_xs %}
+    {% set sm = settings.catalog_list_type_col_sm %}
+    {% set lg = settings.catalog_list_type_col_lg %}
+{% else %}
+    {% set xs = settings.product_list_type_col_xs %}
+    {% set sm = settings.product_list_type_col_sm %}
+    {% set lg = settings.product_list_type_col_lg %}
+{% endif %}
+
+{% if products|length > 0 %}
+<div class="alpix-listing-widget {{custom_css}}">
+    {% if showcase_title %}
+        <h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+            {{showcase_title}}
+        </h2>
+    {% endif %}
+    <div data-slick-xs="{{xs}}"  data-slick-sm="{{sm}}"  data-slick-lg="{{lg}}" class="row prod-list-v{{product_list_type}} prod-list {{slider_this == 'slider' ? 'slick-this'}}" {{ pages.current == "homepage" ? 'data-tray-tst="vitrine_home"' : 'data-tray-tst="vitrine_home"'}} itemscope itemtype="https://schema.org/SomeProducts">
+        {% for product in products %}
+        {% set ranking = product.ranking %}
+            {% element list_type {"slider_this" : slider_this, "product" : product, "xs" : xs, "sm" : sm, "lg" : lg} %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

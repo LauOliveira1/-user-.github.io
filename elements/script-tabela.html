@@ -1,0 +1,413 @@
+{% if 'product' in pages.current %}
+<script>
+    var tabela_medidas = {{ settings.json_medidas_marcas }};
+    // var tabela_medidas = {
+    //     'PP': {'b': 82, 'c': 63, 'q': 88 },
+    //     'P': {'b': 86, 'c': 67, 'q': 92 },
+    //     'M': {'b': 94, 'c': 75, 'q': 100 },
+    //     'G': {'b': 102, 'c': 83, 'q': 108 },
+    //     'GG': {'b': 110, 'c': 91, 'q': 116 },
+    // }
+
+    tabela_medidas = tabela_medidas['{{ product.brand }}'];
+
+    var tabela_imc = {
+        'f': [
+            {'min': 0,  'max': 19.0, 'valor': -1, 'ref-b': -1, 'ref-c': -1, 'ref-q': -1, 'res': 'Abaixo do peso'},
+            {'min': 19.1, 'max': 25.7, 'valor': 0, 'ref-b': 0, 'ref-c': 0, 'ref-q': 0, 'res': 'Saudavel'},
+            {'min': 25.8, 'max': 32.2, 'valor': 0, 'ref-b': 0, 'ref-c': 0, 'ref-q': 1, 'res': 'Sobrepeso'},
+            {'min': 32.3, 'max': 99, 'valor': 1, 'ref-b': 1, 'ref-c': 1, 'ref-q': 1, 'res': 'Obesidade'},
+        ],
+        'm': [
+            {'min': 0,  'max': 20.6, 'valor': -1, 'ref-b': -1, 'ref-c': -1, 'ref-q': -1, 'res': 'Abaixo do peso'},
+            {'min': 20.7, 'max': 26.3, 'valor': 0, 'ref-b': 0, 'ref-c': 0, 'ref-q': 0, 'res': 'Saudavel'},
+            {'min': 26.4, 'max': 31, 'valor': 0, 'ref-b': 0, 'ref-c': 0, 'ref-q': 1, 'res': 'Sobrepeso'},
+            {'min': 31.1, 'max': 99, 'valor': 1, 'ref-b': 1, 'ref-c': 1, 'ref-q': 1, 'res': 'Obesidade'},
+        ]
+    }
+
+    var tabela_cintura = {
+        '-2': {min: 0, max: 63},
+        '-1': {min: 64, max: 67},
+        '0': {min: 68, max: 75},
+        '1': {min: 76, max: 83},
+        '2': {min: 84, max: 999}
+    }
+    
+    var tablea_altura = {
+        'PP': {min: 0, max: 53.8},
+        'P': {min: 53.9, max: 55.6},
+        'M': {min: 55.7, max: 57.5},
+        'G': {min: 57.6, max: 59.33},
+        'GG': {min: 59.33, max: 61.1},
+        'XGG': {min: 61.2, max: 999}
+    }
+
+    var tronco_pct = 33;
+
+    var pontos_por_tamanho = {
+        'PP': -2,
+        'P': 0,
+        'M': 1,
+        'G': 2,
+        'GG': 2,
+        'XGG': 2,
+    }
+
+    var tabela_final_por_pontos = {
+        '-3': 'PP',
+        '-2': 'P',
+        '-1': 'M',
+        '0': 'M',
+        '1': 'G',
+        '2': 'GG',
+        '3': 'XGG'
+    }
+
+    // CINTURA / ALTURA * 100
+    var tabela_gordura = {
+        'f': [
+            {'min': 0,  'max': 34.9, 'res': 'Peso Insuficiente'},
+            {'min': 35, 'max': 41.9, 'res': 'Muito Magra'},
+            {'min': 42, 'max': 48.9, 'res': 'Normal'},
+            {'min': 49, 'max': 53.9, 'res': 'Sobrepeso'},
+            {'min': 54, 'max': 57.9, 'res': 'Obesidade'},
+            {'min': 58, 'max': 99,   'res': 'Obesidade Mórbida'},
+        ],
+        'm': [
+            {'min': 0,  'max': 34.9, 'res': 'Peso Insuficiente'},
+            {'min': 35, 'max': 41.9, 'res': 'Muito Magra'},
+            {'min': 42, 'max': 48.9, 'res': 'Normal'},
+            {'min': 49, 'max': 53.9, 'res': 'Sobrepeso'},
+            {'min': 54, 'max': 57.9, 'res': 'Obesidade'},
+            {'min': 58, 'max': 99,   'res': 'Obesidade Mórbida'},
+        ]
+    }
+
+    var tabela_busto = {
+        'f': {
+            '-1': {'min': 0, 'max': 93.9},
+            '0': {'min': 94, 'max': 109.9},
+            '1': {'min': 110, 'max': 999},
+        },
+        'm': {
+            '-1': {'min': 0, 'max': 93.9},
+            '0': {'min': 94, 'max': 109.9},
+            '1': {'min': 110, 'max': 999},
+        }
+    }
+
+
+    if( !tabela_medidas ){
+        console.warn('TABELA DE MEDIDAS NÃO INFORMADA!');
+    }else{
+
+        jQuery(document).ready( function($){
+            
+            var sexo = 'f';
+            var executa_provador = true;
+            if( !('f' in tabela_medidas) && !('m' in tabela_medidas) ){
+                executa_provador = false;
+            }else{
+                if( !('f' in tabela_medidas) ){
+                    $('.provador-virtual-genero-f').hide();
+                    sexo = 'm';
+                }
+                if( !('m' in tabela_medidas) ){
+                    $('.provador-virtual-genero-m').hide();
+                }
+            }
+
+            if( !executa_provador ){
+                console.warn('MEDIDA INVÁLIDA, NÃO INFORMADO O SEXO!');
+            }else{
+
+                $('.provador-cta-box').removeClass('d-none').addClass('d-flex').fadeIn();
+
+                var idade = null;
+                var altura = null;
+                var peso = null;
+                
+                // -1 = magro
+                // 0 = normal
+                // 1 = sobrepeso
+                var busto = null;
+                var cintura = null;
+                var quadril = null;
+        
+                var IMC = null;
+                var res_imc = null;
+
+                var altura_tronco = null;
+                var tamanho_pela_altura = null;
+        
+                function ajustaMedidasImagem(b,c,q){
+                    $('input[name="ref-busto"]').val(b);
+                    $('input[name="ref-cintura"]').val(c);
+                    $('input[name="ref-quadril"]').val(q);
+                }
+        
+                $('.provador-virtual-medidas-box button').click(function(){
+                    var $this = $(this);
+                    var $box = $this.closest('.provador-virtual-medidas-box');
+                    var text = $this.text();
+                    var $input = $box.find('input');
+                    var value = parseInt($box.find('input').val());
+        
+                    if( text == '-' && value > -1 ){
+                        value = value - 1;
+                    }else if( text == '+' && value < 1 ){
+                        value = value + 1;
+                    }
+                    $input.val(value);
+                    $input.trigger('change');
+                    return false;
+                })
+
+                $('.provador-virtual-cta-back').click( function(){
+                    var $this = $(this);
+                    var $step = $this.closest('.provador-virtual-step');
+                    $step.hide();
+                    $step.prev().show();
+                });
+                $('.cta-reset-provador').click( function(){
+                    var $this = $(this);
+                    var $step = $this.closest('.provador-virtual-step');
+                    $.each( $('.provador-virtual .provador-virtual-step-1 input[type="number"'), function(){
+                        $(this).val('');
+                    })
+                    $step.hide();
+                    $('.provador-virtual-step-1').show();
+                });
+        
+                $('.provador-virtual-cta-next').click( function(){
+                    var $this = $(this);
+                    var $step = $this.closest('.provador-virtual-step');
+        
+                    if( $step.hasClass('provador-virtual-step-1') ){
+                        if( !$('.provador-virtual-genero input:checked').length ){
+                            alert('Selecione seu gênero');
+                            return false;
+                        }
+                        if( $('.provador-virtual-altura').val() == '' || parseInt($('.provador-virtual-altura').val()) <= 0 ){
+                            alert('Informe uma altura válida');
+                            return false;
+                        }
+                        if( $('.provador-virtual-peso').val() == '' || parseInt($('.provador-virtual-peso').val()) <= 0 ){
+                            alert('Informe um peso válida');
+                            return false;
+                        }
+                        if( $('.provador-virtual-idade').val() == '' || parseInt($('.provador-virtual-idade').val()) <= 0 ){
+                            alert('Informe uma idade válida');
+                            return false;
+                        }
+        
+                        // Passo 1
+                        // Obter dados (Altura, Peso e Idade)
+                        sexo = $('.provador-virtual-genero input:checked').val();
+                        altura = parseFloat($('.provador-virtual-altura').val());
+                        peso = parseFloat($('.provador-virtual-peso').val());
+                        idade = parseInt($('.provador-virtual-idade').val());
+        
+                        // Passo 2
+                        // Calcular IMC: IMC = peso em kg / altura² (altura x altura)
+                        IMC = peso / ((altura/100) * (altura/100))
+
+
+                        // Calculando Altura Tronco
+                        //167-(167*(100-35)/100)
+                        altura_tronco = altura - ( altura * (( 100 - tronco_pct) / 100) );
+                        // console.log(altura_tronco, altura, tronco_pct)
+        
+                        for( var x = 0; x < tabela_imc[sexo].length; x++ ){
+                            var item = tabela_imc[sexo][x];
+        
+                            if( IMC >= item['min'] && IMC < item['max'] ){
+                                res_imc = item;
+                            }
+                        }
+                        for( var _altura in tablea_altura ){
+                        //for( var x = 0; x < tablea_altura.length; x++ ){
+                            var item = tablea_altura[_altura];
+        
+                            if( altura_tronco >= item['min'] && altura_tronco < item['max'] ){
+                                tamanho_pela_altura = _altura;
+                            }
+                        }
+        
+                        ajustaMedidasImagem(res_imc['ref-b'],res_imc['ref-c'],res_imc['ref-q']);
+        
+                        $step.hide();
+                        $step.next().show();
+        
+                    }else if( $step.hasClass('provador-virtual-step-2') ){
+                        // Passo 3
+                        // Obter dados (Busto, Cintura e Quadril)
+                        busto = parseInt($('input[name="ref-busto"]').val());
+                        cintura = parseInt($('input[name="ref-cintura"]').val());
+                        quadril = parseInt($('input[name="ref-quadril"]').val());
+        
+                        // Passo 4
+                        // Calcular media gordura: CINTURA / ALTURA * 100
+                        var ref_cintura = res_imc['valor'] + cintura;
+                        var media_gordura = tabela_cintura[ref_cintura]['max'] / altura * 100
+                        
+                        var cintura_maxima = tabela_cintura[ref_cintura]['max'];
+                        
+                        var res_gordura = null;
+                        for( var x = 0; x < tabela_gordura[sexo].length; x++ ){
+                            var item = tabela_gordura[sexo][x];
+                        
+                            if( media_gordura >= item['min'] && media_gordura < item['max'] ){
+                                res_gordura = item;
+                            }
+                        }
+                        
+                        
+                        var melhor_media = null;
+                        for( var item in tabela_medidas[sexo] ){
+                            if( melhor_media == null || tabela_medidas[sexo][item]['c'] < cintura_maxima ){
+                                console.log(item, tamanho_pela_altura)
+                                // if( item != tamanho_pela_altura ){
+                                    var ponto1 = pontos_por_tamanho[item];
+                                    var ponto2 = pontos_por_tamanho[tamanho_pela_altura];
+                                    var res_ponto = ponto1 + ponto2;
+                                    if( res_ponto in tabela_final_por_pontos ){
+                                        item = tabela_final_por_pontos[res_ponto];
+                                    }
+                                // }
+                                
+                                melhor_media = item;
+                            }
+                        }
+
+        
+                        $step.hide();
+                        var $nextStep = $step.next();
+                        $nextStep.show();
+                        $('.js-get-tamanho').html(melhor_media);
+                        setTimeout( function(){
+                            $nextStep.hide();
+                            $nextStep.next().show();
+                        }, 3000);
+        
+                    }
+                    return false;
+                });
+        
+                $('.cta-open-provador').click( function(){
+                    $('.provador-virtual').fadeIn();
+                    return false;
+                });
+                $('.provador-virtual-close, .provador-virtual > .mask').click( function(){
+                    $('.provador-virtual').fadeOut();
+                    return false;
+                });
+
+                $('[name="ref-busto"], [name="ref-cintura"], [name="ref-quadril"]').change( function(){
+                    var $this = $(this);
+                    var $box = $this.closest('.provador-virtual-medidas-box');
+                    var $img = $box.find('img');
+                    
+                    var value = $this.val();
+                    var src = $img.attr(`data-img-${value.toString()}`);
+
+                    $img.attr('src', src);
+                });
+            
+                function criaTabelaMedidas(){
+                    var tabs = []
+                    var tabelas = []
+                    for( var tSexo in tabela_medidas ){
+                        var titulo = '';
+                        if( tSexo == 'f' ){
+                            titulo = 'Tabela de medidas <b>Feminina</b>';
+                        }
+                        if( tSexo == 'm' ){
+                            titulo = 'Tabela de medidas <b>Masculina</b>';
+                        }
+
+                        var linhas = [];
+                        for( var tamanho in  tabela_medidas[tSexo] ){
+                            var item = tabela_medidas[tSexo][tamanho];
+                            linhas.push(`
+                                <tr>
+                                    <td><b>${tamanho}</b></td>
+                                    <td>${item['b']}cm</td>
+                                    <td>${item['c']}cm</td>
+                                    <td>${item['q']}cm</td>
+                                </tr>
+                            `)
+                        }
+
+                        var htmlTabela = `
+                            <div class="box-tabela-medida" id="box-tabela-medida-${tSexo}" style="display: none;">
+                                <h3>${titulo}</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><b>TAMANHOS</b></th>
+                                            <th>BUSTO</th>
+                                            <th>CINTURA</th>
+                                            <th>QUADRIL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${linhas.join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `
+                        tabs.push(`<button class="btn-tabela-medida" data-id="#box-tabela-medida-${tSexo}" style="display: none;">${titulo}</button>`);
+                        tabelas.push(htmlTabela);
+                    }
+                    
+                    $('body').append(`
+                        <div id="modal-tabela-medidas" class="modal-tabela-medidas" style="display: none;">
+                            <div class="mask"></div>
+                            <div class="content">
+                                <div class="modal-tabela-medidas-header">
+                                    <h3>TABELA DE MEDIDAS</h3>
+                                    <button class="modal-tabela-medidas-close"><svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-1202.000000, -312.000000)" fill="#F1D1C2" fill-rule="nonzero" stroke="#DBA78E" stroke-width="0.7"><g transform="translate(1203.000000, 313.000000)"><path d="M0.153516678,13.8464833 C0.251696582,13.9447725 0.384922718,14 0.523847368,14 C0.662772018,14 0.795998154,13.9447725 0.894178058,13.8464833 L7.00005438,7.740607 L13.1059307,13.8464833 C13.2382371,13.9787897 13.4310779,14.0304613 13.6118118,13.9820338 C13.7925457,13.9336063 13.933715,13.792437 13.9821425,13.6117031 C14.03057,13.4309692 13.9788985,13.2381284 13.8465921,13.1058219 L7.74071576,6.99994562 L13.8465921,0.894069303 C13.9788985,0.76176289 14.03057,0.568922093 13.9821425,0.388188172 C13.933715,0.207454252 13.7925457,0.0662849907 13.6118118,0.0178574827 C13.4310779,-0.0305700253 13.2382371,0.0211015106 13.1059307,0.153407923 L7.00005438,6.25928424 L0.894178058,0.153407923 C0.689650064,-0.0511200642 0.358044674,-0.0511200618 0.153516684,0.153407928 C-0.0510113066,0.357935919 -0.051011309,0.689541309 0.153516678,0.894069303 L6.259393,6.99994562 L0.153516678,13.1058219 C0.0552274882,13.2040018 0,13.337228 0,13.4761526 C0,13.6150773 0.0552274882,13.7483034 0.153516678,13.8464833 Z" id="Path"></path></g></g></g></svg></button>
+                                </div>
+                                <div class="modal-tabela-medidas-body">
+                                    <div class="modal-tabela-medidas-tabs">${tabs.join('')}</div>
+                                    <div class="modal-tabela-medidas-tabelas">${tabelas.join('')}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+
+                    $('.cta-open-tabela').click( function(){
+                        // $('#provador-virtual').fadeOut();
+                        $('#modal-tabela-medidas').fadeIn();
+                        return false;
+                    });
+                    $('#modal-tabela-medidas .mask, .modal-tabela-medidas-close').click( function(){
+                        $('#modal-tabela-medidas').fadeOut();
+                        return false;
+                    });
+
+                    $('.btn-tabela-medida').click( function(){
+                        $('.btn-tabela-medida').removeClass('active');
+                        $('.box-tabela-medida').hide();
+                        $($(this).data('id')).show();
+                        $(this).addClass('active');
+                        return false;
+                    });
+                    if( $('.btn-tabela-medida').length > 1 ){
+                        $('.btn-tabela-medida').show();
+                        $('.btn-tabela-medida').first().trigger('click');
+                    }else{
+                        $('.box-tabela-medida').show();
+                    }
+                }
+                criaTabelaMedidas(tabela_medidas);
+            }
+            
+    
+        });
+    
+    }
+</script>
+{% endif %}

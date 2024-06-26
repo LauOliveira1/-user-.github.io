@@ -1,0 +1,71 @@
+<div class="col-{{xs}} col-sm-{{sm}} col-lg-{{lg}}  my-4" itemid="{{ product.id }}">
+    <meta itemprop="productID" content="{{ product.id }}"/>
+    <meta itemprop="sku" content="{{ product.id }}"/>
+    {% if product.ean %}
+        <meta itemprop="gtin14" content="{{ product.ean }}">
+    {% endif %}
+    
+    {% if product.description_small %}
+        <meta itemprop="description" content="{{ product.description_small }}">
+    {% endif %}
+
+    
+    {% if product.brand %}
+    <span itemprop="brand" itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop="name" content="{{ product.brand }}"/>
+    </span>
+    {% endif %} 
+    <div class="product-card">
+        {% set exit = false %}
+        {% for i in product.related_categories  if not exit %}
+            {% if i.id == "13" %}
+                <span class="tag outlet">Outlet</span>
+                {% set exit = true %}
+            {% endif %}
+        {% endfor %}
+        <a href="{{product.link}}" title="{{product.name}}" data-tray-tst="vitrine_produto_link_imagem">
+            <div class="product-image" data-image_multiplier="{{settings.image_type1|default(1)}}" data-image_type="cover">
+                {% if product.images %}
+                    <img itemprop="image" data-src="{{ product.images[0].full }}" alt="{{ product.name }}" title="{{ product.name }}">
+                {% else %}
+                    <img data-src="{{ asset('img/no-image.svg') }}" alt="Nenhuma imagem foi cadastrada" width="100" title="{{ product.name }}">
+                {% endif %}
+            </div>
+            <p class="product-title text-center text-uppercase font-weight-bold my-3" itemprop="name">{{ product.name }}</p>
+        </a>     
+        {% element 'snippets/alpix-product-ranking' {
+            'ranking': product.ranking,
+        } %}                           
+        <div class="product-box-price text-center">
+            {% element 'snippets/product-payment' {"product": product } %}
+        </div>
+        {% if (product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request) and product.variants|length > 0 %}    
+            {% element 'snippets/alpix-list-variants' {"product": product } %}
+        {% else %}
+            {% if product.stock > 0 or settings.without_stock_sale %} 
+            <div class="product-action mt-3 px-1 px-md-4">
+                <div class="row d-flex">
+                    <div class="col-12 col-lg-4 pr-lg-0 mb-3 mb-lg-0">
+                        <div class="quantity-selection" alpix-quantity>
+                            <input class="quantity" type="text" name="quant" value="1"/>
+                            <button type="button" class="plus"><i class="fa fa-caret-up"></i></button>
+                            <button type="button" class="minus"><i class="fa fa-caret-down"></i></button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button class="btn-buy font-weight-bold text-uppercase px-3 transition  opacity" data-product-id="{{product.id}}">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div> 
+            {% else %}
+            <div class="product-action mt-3 px-1 px-md-4">
+                <a href="{{product.link}}" class="btn-buy d-block text-center font-weight-bold text-uppercase px-3 transition opacity bc6">
+                    Detalhes
+                </a>
+            </div> 
+            {% endif %}
+        {% endif %}                               
+    </div>
+</div>   

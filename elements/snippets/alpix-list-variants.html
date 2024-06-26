@@ -1,0 +1,84 @@
+<div class="product-action mt-3 px-1 px-md-4">
+    <div class="variants">
+        {% set productVar = product.Variants|length ? product.Variants :  product.variants %}
+        {% set listVariants = [] %}
+        {% set listVariantsSecond = [] %}
+        {% set variants = [] %}
+        {% set variantName = '' %}
+        {% set variantSecondName = '' %}
+      
+        {% for variant in productVar %}
+      
+          {% if loop.index == 1 %}
+            {% if variant.Sku[1] %}
+              {% set variantSecondName = variant.Sku[1].type %}
+            {% endif %}
+      
+            {% set variantName = variant.Sku[0].type %}
+          {% endif %}  
+      
+          {% set stock = variant.stock|number_format - variant.minimum_stock|number_format %}
+      
+          {% if variant.id|length == '0' %} 
+      
+                {% set variants = '' %}
+      
+            {% elseif variant.Sku[1] %}
+                {% set variants = variants|merge([{ "price": {"price": variant.price_offer != 0 ? variant.price_offer : variant.price, "payment": variant.payment_option }, "id": variant.id, "stock": stock, "option": variant.Sku[0].value|convert_encoding('UTF-8', 'ISO-8859-1'), "option2": variant.Sku[1].value|convert_encoding('UTF-8', 'ISO-8859-1') }]) %}
+            
+                {% set valueSecond = variant.Sku[1].value %}
+                {% if not (valueSecond in listVariantsSecond) %}
+                    {% set listVariantsSecond = listVariantsSecond|merge([valueSecond]) %}
+                {% endif %}
+            
+            {% else %}
+                {% set variants = variants|merge([{ "price": {"price": variant.price_offer != 0 ? variant.price_offer : variant.price, "payment": variant.payment_option }, "id": variant.id, "stock": stock, "option": variant.Sku[0].value|convert_encoding('UTF-8', 'ISO-8859-1') }]) %}
+            {% endif %}
+      
+            {% set value = variant.Sku[0].value %}
+      
+            {% if not (value in listVariants) %}
+              {% set listVariants = listVariants|merge([value]) %}
+            {% endif %}
+      
+        {% endfor %}
+        
+        <form class="list-variants" data-id="{{ product.id }}" data-variants='{{ variants ? variants|json_encode : "" }}'>
+            {% if variantName %}
+            <div>
+                <select class="first list-variant-select d-block w100 p4 p-2 mb-2 form-control" required>
+                    <option value="" hidden>Selecione {{ variantName }}</option>
+                    {% for value in listVariants %}
+                    <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            {% if variantSecondName %}
+            <div>
+                <select class="second list-variant-select d-block w100 p4 p-2 mb-2 form-control" required>
+                    <option value="" hidden>Selecione {{ variantSecondName }}</option>
+                    {% for value in listVariantsSecond %}
+                    <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="row d-flex">
+                <div class="col-12 col-lg-4 pr-lg-0 mb-3 mb-lg-0">
+                    <div class="quantity-selection" alpix-quantity>
+                        <input class="quantity" type="text" name="quant" value="1" required/>
+                        <button type="button" class="plus"><i class="fa fa-caret-up"></i></button>
+                        <button type="button" class="minus"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn-buy font-weight-bold text-uppercase px-3 transition  opacity">
+                        Comprar
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
+    
+</div> 

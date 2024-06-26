@@ -1,0 +1,74 @@
+<header>
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '250999906266576');
+    fbq('track', 'PageView');
+    fbq('track', 'ViewContent');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=250999906266576&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <div class="" style="
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;"> 
+        <button id="btnNewsletter">CLIQUE AQUI E ASSINE NOSSA NEWSLETTER</button>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+            {% if pages.current == 'home' %}
+                <h1 class="site-logo" alt="{{ store.name }}">
+                    <a href="{{ links.home }}" data-tray-tst="logotipo_loja">{{ Image('logo') }}</a>
+                </h1>
+            {% else %}
+                <a href="{{ links.home }}" class="site-logo" data-tray-tst="logotipo_loja">{{ Image('logo') }}</a>
+            {% endif %}
+            </div>
+            
+            <div class="col-sm-9 col-xs-12">
+                {% element 'snippets/customer' %}
+                <div class="row">
+                    {% if settings.structure == 1 %}
+                    <div class="col-md-9 col-sm-8 hidden-xs">
+                    {% elseif settings.structure == 2 %}
+                    <div class="col-md-8 col-sm-8 hidden-xs">
+                    {% endif %}    
+                        {% element 'snippets/search' %}
+                    </div>
+                    
+                    {% if settings.structure == 1 %}
+                    <div class="col-md-3 col-sm-4 hidden-xs">
+                    {% elseif settings.structure == 2 %}
+                    <div class="col-md-4 col-sm-4 hidden-xs">
+                    {% endif %} 
+                        {% element 'snippets/cart' %}
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper-nav clearfix visible-xs-block">
+                <div class="col-xs-2">
+                    <button class="trigger-menu">
+                        <img src="{{ asset('img/menu.svg') }}" alt="Menu">
+                    </button>
+                </div>
+                <div class="col-xs-8">
+                    {% element 'snippets/search' %}
+                </div>
+                <div class="col-xs-2 wrapp-cart">
+                    {% element 'snippets/cart' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,48 @@
+<div class="col-{{xs}} col-sm-{{sm}} col-lg-{{lg}}  my-3 mt-4 mb-0" itemid="{{ product.id }}">
+    <div class="product-card">
+        {% set exit = false %}
+        {% for i in product.related_categories  if not exit %}
+            {% if i.id == "13" %}
+                <span class="tag outlet">Outlet</span>
+                {% set exit = true %}
+            {% endif %}
+        {% endfor %}
+        <div class="row">
+            <div class="col-12 col-lg-5 mb-3 mb-lg-0 text-center">
+                <a href="{{product.link}}" title="{{product.name}}" data-tray-tst="vitrine_produto_link_imagem">
+                    <div class="product-image" data-image_multiplier="{{settings.image_type3|default(1.4)}}" data-image_type="cover">
+                        {% if product.images %}
+                            <img itemprop="image" data-src="{{ product.images[0].full }}" alt="{{ product.name }}" title="{{ product.name }}">
+                        {% else %}
+                            <img data-src="{{ asset('img/no-image.svg') }}" alt="Nenhuma imagem foi cadastrada" width="100" title="{{ product.name }}">
+                        {% endif %}
+                    </div>                                    
+                </a>                                        
+            </div>
+            <div class="col-12 col-lg-7 order-lg-1">
+                <a href="{{product.link}}" title="{{product.name}}">
+                    <p class="product-title text-uppercase font-weight-bold mb-3">
+                        {{ product.name|length > 45 ? product.name|slice(0, 42) ~ '...' : product.name }}
+                    </p>
+                </a>
+                <p class="product-resume">
+                    {{ product.description_small|length > 80 ? product.description_small|slice(0, 77) ~ '...' : product.description_small }}
+                </p>
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <div class="product-box-price">
+                            {% element 'snippets/product-payment' {"product": product } %}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="product-action">
+                            <a href="{{product.link}}" class="btn-buy font-weight-bold text-uppercase px-4 py-2 transition opacity">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>                                        
+            </div>                                    
+        </div>                                
+    </div>
+</div>

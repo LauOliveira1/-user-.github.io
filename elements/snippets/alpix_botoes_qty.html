@@ -1,0 +1,46 @@
+{% set quantity_type = settings.quantity_type|default(1) %}
+
+<span id="product-form-box">
+    {% if quantity_type == 0 %}
+    <div data-app="product.quantity" class="clearfix quantity_type_1" id="quantidade">
+        <div class="row my-3">
+            <
+            <div class="quantity-selection" alpix-quantity>
+                <input class="quantity" type="text" name="quant" value="1"/>
+                <button type="button" class="plus"><i class="fa fa-caret-up"></i></button>
+                <button type="button" class="minus"><i class="fa fa-caret-down"></i></button>
+            </div>
+        </div>
+		<span class="hide" id="estoque_variacao">&nbsp;</span>
+		<input type="hidden" id="estoque_">
+    </div>
+    <div data-app="product.buy-button" id="bt_comprar" >
+        <button class="" id="button-buy" type="submit" data-tray-tst="button_buy_product">
+            <span class="botao-commerce-img">Comprar</span>
+        </button>
+    </div>
+    {% elseif quantity_type == 1 %}
+    <div data-app="product.quantity" class="clearfix quantity_type_1" id="quantidade">
+        <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-6 text-right ">
+                <label class="mb-0 font-weight-normal tc4 h4">Quantidade:</label>
+            </div>
+            <div class="col-3 text-left">
+                <div class="quantity-selection" alpix-quantity>
+                    <input class="quantity" type="text" name="quant" value="1"/>
+                    <button type="button" class="plus"><i class="fa fa-caret-up"></i></button>
+                    <button type="button" class="minus"><i class="fa fa-caret-down"></i></button>
+                </div>
+            </div>          
+        </div>
+		<span class="hide" id="estoque_variacao">&nbsp;</span>
+		<input type="hidden" id="estoque_">
+    </div>
+    <div data-app="product.buy-button" id="bt_comprar" >
+        <button class="d-block w100 font-weight-bold bc-buy tc-white h3 py-3 border-0" id="button-buy" type="submit" data-tray-tst="button_buy_product">
+            <span class="botao-commerce-img">Comprar</span>
+        </button>
+    </div>
+    {% elseif quantity_type == 2 %}
+    {% endif %}
+</span>

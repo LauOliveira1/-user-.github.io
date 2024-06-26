@@ -1,0 +1,10 @@
+
+{% if pages.current in ['catalog','search'] %}
+    {% element 'new-smart-filter' %}
+{% endif %}
+
+{% if banner.side %}
+<div class="banner banner-sidebar d-none d-md-block">
+    {{ banner.side }}
+</div>
+{% endif %}

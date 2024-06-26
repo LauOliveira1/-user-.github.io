@@ -1,0 +1,8 @@
+{% if settings.testimonials_empty and settings.testimonials_validated %}
+    <div class="custom-ranking">
+        <div class="ranking-rate r{{ranking.rating}}"></div>
+    </div>
+    {% if total %}
+    <span class="total">{{ nota.count }} Opiniões</span>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,286 @@
+{% set footer_type          = settings.footer_type|default(1) %}
+{% set footer_text          = settings.footer_text %}
+{% set newsletter_type      = settings.newsletter_type|default(1) %}
+{% set newsletter_title     = settings.newsletter_title|default('Newsletter') %}
+{% set newsletter_small     = settings.newsletter_small|default('Se inscreva e receba nossas novidades') %}
+{% set newsletter_inverse   = settings.invert_header|default('Sim')== "Sim" ? "inverse" %}
+{% set newsletter_onlyhome  = settings.newsletter_visible_only == "home" ? ["inverse"] %}
+
+
+
+{% if settings.instagram_user and "home" in pages.current and settings.instagram_type == 2 %}
+    <div class="container" >
+        {% if settings.instagram_title %}
+            <h2 class="block-header font-weight-bold text-center mt-5 mb-4 pt-4 text-uppercase">
+                {{settings.instagram_title}}
+            </h2>
+        {% endif %}
+        <div class="row type_2" id="instafeed">
+
+        </div>
+    </div>
+{% endif %}
+<footer class="mt-3 mt-md-5">
+    {% if newsletter_type == 1 or pages.current in newsletter_onlyhome %}
+    <section id="alpix_newsletter" class="py-3 type_1">
+        <div class="container">
+            <h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase white">
+                {{ newsletter_title }}
+                <p class="text-center font-weight-light sub-title mt-3">{{ newsletter_small }}</p>
+            </h2>                        
+            <div class="row my-5">
+                <div class="col-8 col-xs-12 offset-2">
+                    <form action="{{ links.newsletter }}" method="post" name="newsletter">
+                        <div class="row d-flex align-items-center justify-content-center">
+                            <!-- <div class="col-12 col-lg-4 px-1 my-1">
+                                <input type="text" placeholder="Digite seu nome..." name="email" id="newsletter"class="form-control p3">
+                            </div> -->
+                            <div class="col-12 col-lg-4 px-1 my-1">
+                                <input type="text" class="form-control p3" name="email" id="newsletter" placeholder="Digite seu email...">
+                            </div>
+                            <div class="col-12 col-lg-2 px-1 my-1">
+                                <button type="submit" data-tray-tst="newsletter_cadastrar" class="btn d-block text-center w100 text-uppercase font-weight-bold transition opacity">
+                                    Assinar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    {% if settings.instagram_user  and "home" in pages.current and settings.instagram_type == 1 %}
+    <div class="container-fluid" >
+        <div class="row type_1" id="instafeed">
+
+        </div>
+    </div>
+    {% endif %}
+    {% if benefits_type == 4 %}
+        {% element 'snippets/alpix-benefitsbar' %}
+    {% endif %}
+    {% if newsletter_type == 2 or pages.current in newsletter_onlyhome %}
+    <section id="alpix_newsletter" class="py-4 px-2 px-md-0 py-md-3 type_2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-5 mb-4 mb-md-0">
+                    <h2 class="block-header font-weight-bold text-center m-0 p-0 text-uppercase">
+                        {{ newsletter_title }}
+                    </h2>                        
+                </div>
+                <div class="col-12 col-md-7">
+                    <form action="{{ links.newsletter }}" method="post" name="newsletter">
+                        <div class="row">
+                            <div class="col-12 col-md-9">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 px-3 px-md-1">
+                                        <input type="text" class="form-control mt-2 mt-sm-0  p3" name="name" placeholder="{{ Translation('digitar_nome') }}" required>
+                                    </div>
+                                    <div class="col-12 col-md-6  px-3 px-md-1">
+                                        <input type="email" class="form-control mt-2 mt-sm-0 p3" name="email"  placeholder="{{ Translation('digitar_email') }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3 px-3 px-md-1">
+                                <button type="submit" data-tray-tst="newsletter_cadastrar" class="btn  mt-2 mt-sm-0 d-block text-center w100 text-uppercase font-weight-bold transition opacity">
+                                    Assinar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <div class="footer-middle py-5 px-3 px-md-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-4">
+                    <h4 class="text-uppercase mt-0 mb-3">{{settings.footer_title1|default('Institucional')}}</h4>
+                    <ul class="m-0">
+                        {% if settings.footer_list_1 != "" and footer_type == 2 %}
+                        {% set pages_split = settings.footer_list_1|trim|lower|split(';') %}
+                        {% for custom in pages.custom %}
+                            {% if custom.name|lower in pages_split %}    
+                                <li class="mb-1">
+                                    <a href="{{custom.url}}" class="transition">
+                                        {{ custom.name }}
+                                    </a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}  
+                        {% else %}
+                            {% for custom in pages.custom %}
+                                <li class="mb-1">
+                                    <a href="{{custom.url}}" class="transition">
+                                        {{ custom.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}  
+                        {% endif %}                   
+                    </ul>
+                    {% if footer_type == 2 %}
+                    <h4 class="text-uppercase mt-5 mb-3">Redes Sociais</h4>
+                    <div class="my-4">
+                        <div class="social">
+                            {% set socials = { 
+                                facebook: {link: settings.facebook, alt: "Curta nossa página no Facebook"}, 
+                                twitter: {link: settings.twitter, alt: "Siga-nos no Twitter"}, 
+                                instagram: {link: settings.instagram, alt: "Siga-nos no Instagram"}, 
+                                google: {link: settings.google, alt: "Siga-nos no Google"}, 
+                                pinterest: {link: settings.pinterest, alt: "Siga-nos no Pinterest"}, 
+                                youtube: {link: settings.youtube, alt: "Inscreva-se no Youtube"}, }
+                            %}
+                            {% for social, attr in socials %} {% if attr.link %}
+                            <a class="social-icons transition mr-1" href="{{ attr.link }}" target="_blank">
+                                <i class="fa fa-lg fa-fw fa-{{social}}"></i>
+                            </a>
+                            {% endif %} {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-4">
+                    <h4 class="text-uppercase  mt-0 mb-3">{{settings.footer_title2|default('Atendimento')}}</h4>
+                    <ul class="m-0 no-before contact-menu">
+                        {% if Translation('ag_telefone_1') != '' or Translation('ag_telefone_2') != '' %}
+                        <li class="mb-3 telefones">
+                            <a href="tel:{{ Translation('ag_telefone_1')|replace({'(':'',')':'',' ':'','-':''}) }}" class="d-flex align-items-center m-0 transition"  data-tray-tst="contato_telefone">
+                                {% if settings.footer_img_1 %}
+                                <img src="{{themePath ~ settings.footer_img_1}}" class="mr-4">
+                                {% else %}
+                                <i class="fa fa-phone mr-4"></i>
+                                {% endif %}
+                                <span>
+                                    <b>Telefone</b>
+                                    {{ Translation('ag_telefone_1') }}
+                                    {% if Translation('ag_telefone_1') != '' and Translation('ag_telefone_2') != '' %}<br>{% endif %}
+                                    {{ Translation('ag_telefone_2') }}
+                                </span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if Translation('ag_telefone_3') != ''%}
+                        <li class="mb-3 whatsapp">
+                            <a href="https://api.whatsapp.com/send?phone=+55{{ Translation('ag_telefone_3')|replace({'(':'',')':'',' ':'','-':''}) }}" class="d-flex align-items-center m-0 transition"  data-tray-tst="contato_telefone">
+                                {% if settings.footer_img_2 %}
+                                <img src="{{themePath ~ settings.footer_img_2}}" class="mr-4">
+                                {% else %}
+                                <i class="fa fa-phone mr-4"></i>
+                                {% endif %}
+                                <span>
+                                    <b>Whatsapp</b>
+                                    {{ Translation('ag_telefone_3') }}
+                                </span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% if Translation('ag_email_1') != '' or Translation('ag_email_2') != '' %}
+                        <li class="mb-3 emails">
+                            <a href="mailto:{{ Translation('ag_email_1') }}" class="d-flex align-items-center m-0 transition"  data-tray-tst="contato_email">
+                                {% if settings.footer_img_3 %}
+                                <img src="{{themePath ~ settings.footer_img_3}}" class="mr-4">
+                                {% else %}
+                                <i class="fa fa-envelope mr-4"></i>
+                                {% endif %}
+                                <span>
+                                    <b>E-mail</b>    
+                                    {{ Translation('ag_email_1') }}
+                                    {% if Translation('ag_email_1') != '' and Translation('ag_email_2') != '' %}<br>{% endif %}
+                                    {{ Translation('ag_email_2') }}
+                                </span>
+                                
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+
+                        {% if Translation('ag_atendimento') != '' %}
+                        <li class="mb-1 d-flex align-items-center atendimento">
+                            {% if settings.footer_img_4 %}
+                            <img src="{{themePath ~ settings.footer_img_4}}" class="mr-4">
+                            {% else %}
+                            <i class="fa fa-clock mr-4"></i>
+                            {% endif %}
+                            <p class="d-inline-block m-0 mb-2" data-tray-tst="horario_atendimento"><b>Horário de Atendimento</b>{{ Translation('ag_atendimento') }}</p>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="col-12 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-4">
+                    <h4 class="text-uppercase  mt-0 mb-3">{{settings.footer_title3|default('Pagamento')}}</h4>
+                    {% if settings.footer_list_2 != "" and footer_type == 2 %}
+                        <ul class="m-0">
+                        {% set pages_split = settings.footer_list_2|trim|lower|split(';') %}
+                        {% for custom in pages.custom %}
+                            {% if custom.name|lower in pages_split %}    
+                            <li class="mb-1">
+                                <a href="{{custom.url}}" class="transition">
+                                    {{ custom.name }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %} 
+                        </ul>
+                    {% else %}
+                    <div id="payments_footer">
+                        {% element 'snippets/payment-list' %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-4">
+                    <h4 class="text-uppercase  mt-0 mb-3">{{settings.footer_title4|default('Redes Sociais')}}</h4>
+                    {% if footer_type == 2 %}
+                        <div id="payments_footer">
+                            {% element 'snippets/payment-list' %}
+                        </div>
+                    {% else %}
+                    {% if settings.facebook %}
+                    <div>
+                        <div id="fb-root"></div>
+                        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v6.0&appId=544083602857371&autoLogAppEvents=1"></script>
+                        <div class="fb-page" data-href="{{settings.facebook}}/" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/sommapublicidade/" class="fb-xfbml-parse-ignore"><a href="{{settings.facebook|default('https://www.facebook.com/sommapublicidade')}}/"></a></blockquote></div>
+                    </div>
+                    {% endif %}
+                    <div class="my-4">
+                        <div class="social">
+                            {% set socials = { 
+                                facebook: {link: settings.facebook, alt: "Curta nossa página no Facebook"}, 
+                                twitter: {link: settings.twitter, alt: "Siga-nos no Twitter"}, 
+                                instagram: {link: settings.instagram, alt: "Siga-nos no Instagram"}, 
+                                google: {link: settings.google, alt: "Siga-nos no Google"}, 
+                                pinterest: {link: settings.pinterest, alt: "Siga-nos no Pinterest"}, 
+                                youtube: {link: settings.youtube, alt: "Inscreva-se no Youtube"}, }
+                            %}
+                            {% for social, attr in socials %} {% if attr.link %}
+                            <a class="social-icons transition" href="{{ attr.link }}" target="_blank">
+                                <i class="fa fa-lg fa-fw fa-{{social}}"></i>
+                            </a>
+                            {% endif %} {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copy py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-3">{{ Translation('ag_mensagem_rodape') }}</p>
+                    <div class="m-0">
+                        {% element 'snippets/credits' %}
+                    </div>
+                    <a href="https://www.sommapublicidade.com.br" target="_blank" class="d-block mb-3">
+                        <svg class="d-block mt-3 mx-auto w100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="71" height="21" viewBox="0 0 71 21"> <image id="logo_original" data-name="logo original" width="71" height="21" xlink:href="data:img/png;base64,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"/> </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

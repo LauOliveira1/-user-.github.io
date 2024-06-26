@@ -1,0 +1,51 @@
+{% set lim_menu      = settings.lim_menu|default(8) %}
+{% set lim_menu_down = (lim_menu - 1) %}
+{% set nenzaManeiro = [13, 301] %}
+<nav class="m-0 p-0">
+    <ul class="m-0 p-0 text-center">
+        {% for level1 in categories|slice(0,lim_menu_down) %}
+            {% if loop.index <= lim_menu_down or utils.is_mobile %}
+                {% if level1.children %}
+                <li class="list-inline-item menu-item-1 p-3 has-child">
+                    <a href="{{ level1.link }}" class="menu-link-1 font-weight-bold" data-tray-tst="categoria_lvl_1" data-nenza="{{level1.id in nenzaManeiro ? '' : 'lvl1'}}">
+                        {{ level1.name }}
+                    </a>
+                    <i class="fa fa-chevron-down ml-1"></i>
+                    <ul class="dropdown-menu">
+                        {% for level2 in level1.children %}
+                        <li class="mx-4 my-2">
+                            <a href="{{ level2.link }}" data-tray-tst="categoria_lvl_2">
+                                {{ level2.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% else %}
+                    <li class="list-inline-item menu-item-1 p-3">
+                        <a href="{{ level1.link }}" class="menu-link-1 font-weight-bold" data-tray-tst="categoria_lvl_1" data-nenza="{{level1.id in nenzaManeiro ? '' : 'lvl1'}}">
+                            {{ level1.name }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if categories|count > lim_menu and not utils.is_mobile %}
+            <li class="list-inline-item menu-item-1 p-3 has-child">
+                <a href="#" onclick="return false;" class="menu-link-1 font-weight-bold" data-tray-tst="categoria_lvl_1">
+                    Outros
+                </a>
+                <i class="fa fa-chevron-down ml-1"></i>
+                <ul class="dropdown-menu">
+                    {% for level2 in categories|slice(4,99) %}
+                    <li class="mx-4 my-2">
+                        <a href="{{ level2.link }}" data-tray-tst="categoria_lvl_2">
+                            {{ level2.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>        
+        {% endif %}
+    </ul>
+</nav>

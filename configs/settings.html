@@ -1,0 +1,2135 @@
+<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<style>
+    html{overflow-x:hidden;}
+    .alpix_options {
+        padding: 50px;
+        background: #f9f9f9;
+        width: calc(100vw - 60px);
+        margin-left: calc(-33.3333% - 23px);
+    }
+
+    .content-section-maneira {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .box-section {
+        width: 50%;
+        padding: 15px;
+        box-shadow: 1px 1px 2px #505050;
+    }
+    .box-section .title, .box-upload .name-file {
+        font-size: 16px;
+        font-weight: 500;
+        color: #1E2832;
+        margin-top: 10px;
+    }
+    .flex {
+        display: flex;
+    }
+    .align-center, .align-content-center {
+        align-items: center;
+    }
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .input-area input {
+        height: 50px;
+        border: 1px solid #f1f1f1;
+        border-radius: 0px;
+        display: block;
+        width: 100%;
+        -webkit-appearance: none;
+        box-shadow: none;
+        padding: 0 20px;
+    }
+    .featured {
+        font-weight: 500;
+        font-size: 16px;
+        margin: 20px 0;
+        color: #1E2832;
+    }
+    .title-view[data-number]::before {
+        content: attr(data-number);
+        font-size: 16px;
+        font-weight: 500;
+        width: 32px;
+        height: 32px;
+        border-radius: 0px;
+        background-color: #4dc4bf;
+        line-height: 32px;
+        text-align: center;
+        color: #fff;
+        margin-right: 10px;
+        display: block;
+    }
+    .title-view span {
+        font-size: 16px;
+        font-weight: 500;
+        font-style: normal;
+        line-height: 1.29;
+        color: #1E2832;
+    }
+
+    .content-section {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    .check-drag {
+        display: block;
+        margin: 0;
+    }
+    .check-drag input {
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0;
+    }
+    .title-view {
+        display: flex;
+        align-items: center;
+    }
+    .content-section .item:not(:first-child) {
+        margin-top: 14px;
+    }
+
+    .check-drag input:checked+.icon {
+        background-color: #1dc44a;
+    }
+    .check-drag .icon {
+        display: flex;
+        align-items: center;
+        padding: 0 2.3px;
+        border-radius: 14px;
+        height: 23px;
+        cursor: pointer;
+        background-color: #b00;
+        width: 48px;
+    }
+    .check-drag .icon, .list-position .drag-list li {
+        transition: background-color .2s ease-in-out;
+        position: relative;
+    }
+
+    .check-drag input:checked+.icon::before {
+        transform: translateX(25px);
+    }
+    
+    .check-drag .icon::before {
+        content: '';
+        display: block;
+        width: 19px;
+        height: 19px;
+        border-radius: 50%;
+        background-color: #fff;
+        transition: transform .2s ease-in-out;
+        box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, .26);
+    }
+
+    .input-area.max {
+        max-width: 380px;
+    }
+    .input-area {
+        display: flex;
+        position: relative;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+    .input-area select {
+        font-size: 16px;
+        height: 50px;
+        border: 1px solid #f1f1f1;
+        border-radius: 0px;
+        display: block;
+        width: 100%;
+        -webkit-appearance: none;
+        box-shadow: none;
+        padding: 0 2.5rem 0 1.25rem;
+        background-color: #fff;
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.362 292.362"%3E%3Cpath d="M286.935 69.377c-3.614-3.617-7.898-5.424-12.848-5.424H18.274c-4.952 0-9.233 1.807-12.85 5.424C1.807 72.998 0 77.279 0 82.228c0 4.948 1.807 9.229 5.424 12.847l127.907 127.907c3.621 3.617 7.902 5.428 12.85 5.428s9.233-1.811 12.847-5.428L286.935 95.074c3.613-3.617 5.427-7.898 5.427-12.847 0-4.948-1.814-9.229-5.427-12.85z"/%3E%3C/svg%3E%0A');
+        background-repeat: no-repeat;
+        background-size: 10px;
+        background-position: right 15px center;
+        cursor: pointer;
+    }
+    .list-radio .option {
+        position: relative;
+        cursor: pointer;
+        margin: 0 20px 0 0;
+    }
+    .agenciar8-panel .msg, .list-radio .option {
+        font-weight: 400;
+        color: #1E2832;
+        font-size: 16px;
+    }
+
+    .list-radio .option input {
+        position: absolute;
+        opacity: .0001;
+        z-index: -1;
+        width: 0;
+        height: 0;
+    }
+    
+    .list-radio .option .dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #1E2832;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 6px;
+    }
+
+    .box-file:hover .remove-img, .list-position .drag-list li.ui-sortable-handle:hover::before, .list-radio .option input:checked+.dot::before {
+        opacity: 1;
+    }
+    
+    .list-radio .option .dot::before {
+        content: '';
+        display: block;
+        width: 13px;
+        height: 14px;
+        border-radius: 50%;
+        background: #1E2832;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+    }
+
+
+    #form-content .form-group{border:0}
+    #form-content ul{
+        margin: 10px 0 0 20px;
+    }
+    #form-content .img-thumbnail{
+        padding:10px!important;
+        margin-bottom:10px;
+        background:#ccc;
+    }
+
+    .ls-float-right.ls-no-padding-right{
+        position: fixed;
+        z-index: 10;
+        bottom: 30px;
+        right: 30px;
+        background: #fff;
+        padding: 15px!important;
+        box-shadow: 0px 0px 10px rgba(0,0,0,.1);
+    }
+</style>
+<script>
+    var google_webfonts = ['Roboto','Lato','Ubuntu','Oswald','Roboto Slab','Muli','Work Sans','Quicksand','Montserrat','Josefin Sans'];
+</script>
+<div class="alpix_options">
+    <div class="block-group">
+        <div class="page-header">
+            <h1>1. Cabe&#x00E7;alho</h1>
+        </div>  
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Barra do Topo</h3>                
+                <div class="form-group">
+                    <label>Barra Vis&#x00ED;vel?</label>
+                    <select class="form-control" name="topbar_visible">
+                        <option value="0">N&#x00E3;o</option>
+                        <option value="1">Apenas Desktop</option>
+                        <option value="2">Apenas Mobile</option>
+                        <option value="3">Sempre</option>                            
+                    </select>
+                </div>  
+                <div class="form-group">
+                    <label>Conte&#x00FA;do (HTML)</label>
+                    <textarea class="form-control" name="topbar_content" rows="6"></textarea>
+                </div>
+                <h3>Fontes</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Barra Topo - Desktop</label>
+                            <select class="form-control" name="topbar_fontsize_desktop">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>
+                            </select>
+                        </div>
+                    </div>  
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Barra Topo - Mobile</label>
+                            <select class="form-control" name="topbar_fontsize_mobile">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>
+                            </select>
+                        </div>
+                    </div>       
+                </div>                            
+            </div>
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="topbar_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. Links</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="topbar_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. Texto</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="topbar_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Borda Inferior</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="topbar_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="topbar_color5">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Estrutura</h3>
+                <div class="form-group">
+                    <label>Tipo do Cabe&#x00E7;alho</label>
+                    <select class="form-control" name="header_type">
+                        <option value="1">Logo Esquerda - Menu Centro - Fun&#x00E7;&#x00F5;es Direita</option>
+                        <option value="2">Logo Esquerda - Busca Centro - Fun&#x00E7;&#x00F5;es Direita - Menu Abaixo</option>
+                        <option value="3">Busca Esquerda - Logo Centro - Fun&#x00E7;&#x00F5;es Direita - Menu Abaixo</option>
+                    </select>
+                </div>
+                <hr></hr>
+                <h3>&#x00ED;cones</h3>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>PNG - Usu&#x00E1;rio</label>
+                            <input type="file" name="header_img_1" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>PNG - Carrinho</label>
+                            <input type="file" name="header_img_2" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>PNG - Busca</label>
+                            <input type="file" name="header_img_3" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>SVG - Usu&#x00E1;rio</label>
+                            <textarea class="form-control" name="header_svg_1"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>SVG - Carrinho</label>
+                            <textarea class="form-control" name="header_svg_2"></textarea>      
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>SVG - Busca</label>
+                            <textarea class="form-control" name="header_svg_3"></textarea>     
+                        </div>
+                    </div>
+                </div>
+                <hr></hr>
+                <h3>Fontes</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Menu - Desktop</label>
+                            <select class="form-control" name="menu_fontsize_desktop">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>                     
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Menu - Mobile</label>
+                            <select class="form-control" name="menu_fontsize_mobile">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Sub Menu - Desktop</label>
+                            <select class="form-control" name="dropdown_fontsize_desktop">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Sub Menu - Mobile</label>
+                            <select class="form-control" name="dropdown_fontsize_mobile">
+                                <option value="10px">10px</option>
+                                <option value="11px">11px</option>
+                                <option value="12px">12px</option>
+                                <option value="13px">13px</option>
+                                <option value="14px">14px</option>
+                                <option value="15px">15px</option>
+                                <option value="16px">16px</option>
+                                <option value="17px">17px</option>
+                                <option value="18px">18px</option>
+                                <option value="19px">19px</option>
+                                <option value="20px">20px</option>
+                            </select>
+                        </div>
+                    </div>                                 
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. &#x00ED;cones</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. Links do Menu</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Fundo do Menu</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Fundo do Dropdown</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color5">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>6. Links do Dropdown</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color6">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>7. Cor do Bot&#x00E3;o</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="header_color7">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="block-group">
+        <div class="page-header">
+            <h1>2. Conte&#x00FA;do</h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Estrutura</h3>
+
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Lista de Produto (padr&#x00E3;o)</label>
+                            <select class="form-control" name="product_list_type">
+                                <option value="1">1- Adicionar produto ao carrinho com quantidade</option>
+                                <option value="2">2- Simples com Bot&#x00E3;o surgindo</option>
+                                <option value="3">3- Foto pequena lateral com Descri&#x00E7;&#x00E3;o curta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(D)</label>
+                            <select class="form-control" name="product_list_type_col_lg">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(T)</label>
+                            <select class="form-control" name="product_list_type_col_sm">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(M)</label>
+                            <select class="form-control" name="product_list_type_col_xs">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Lista de Produto (Categoria)</label>
+                            <select class="form-control" name="catalog_list_type">
+                                <option value="1">1- Adicionar produto ao carrinho com quantidade</option>
+                                <option value="2">2- Simples com Bot&#x00E3;o surgindo</option>
+                                <option value="3">3- Foto pequena lateral com Descri&#x00E7;&#x00E3;o curta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(D)</label>
+                            <select class="form-control" name="catalog_list_type_col_lg">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(T)</label>
+                            <select class="form-control" name="catalog_list_type_col_sm">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(M)</label>
+                            <select class="form-control" name="catalog_list_type_col_xs">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Lista de Produto (Busca)</label>
+                            <select class="form-control" name="search_list_type">
+                                <option value="1">1- Adicionar produto ao carrinho com quantidade</option>
+                                <option value="2">2- Simples com Bot&#x00E3;o surgindo</option>
+                                <option value="3">3- Foto pequena lateral com Descri&#x00E7;&#x00E3;o curta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(D)</label>
+                            <select class="form-control" name="search_list_type_col_lg">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(T)</label>
+                            <select class="form-control" name="search_list_type_col_sm">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(M)</label>
+                            <select class="form-control" name="search_list_type_col_xs">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Lista de Produto (Produtos relacionados)</label>
+                            <select class="form-control" name="related_list_type">
+                                <option value="1">1- Adicionar produto ao carrinho com quantidade</option>
+                                <option value="2">2- Simples com Bot&#x00E3;o surgindo</option>
+                                <option value="3">3- Foto pequena lateral com Descri&#x00E7;&#x00E3;o curta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(D)</label>
+                            <select class="form-control" name="related_list_type_col_lg">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(T)</label>
+                            <select class="form-control" name="related_list_type_col_sm">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group">
+                            <label>(M)</label>
+                            <select class="form-control" name="related_list_type_col_xs">
+                                <option value="12">1</option>
+                                <option value="6">2</option>
+                                <option value="4">3</option>
+                                <option value="3">4</option>
+                                <option value="2">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. T&#x00ED;tulos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. Destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. Texto Leve</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Bot&#x00E3;o Loja</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Bot&#x00E3;o Comprar</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color5">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>6. Bot&#x00E3;o sem destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color6">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>7. Fundo claro p/ destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="content_color7">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>  
+    <div class="block-group">
+        <div class="page-header">
+            <h1>3. Elementos da Home</h1>
+            <div class="alert alert-warning" role="alert">
+                <b>Aten&#x00E7;&#x00E3;o:</b> Consulte a <b>ag&#x00EA;ncia</b> antes de realizar qualquer altera&#x00E7;&#x00E3;o nesses campos
+                <br>
+                <p>Atrav&#x00E9;s dos campos abaixo &#x00E9; poss&#x00F3;vel realizar a altera&#x00E7;&#x00E3;o dos blocos da p&#x00E1;gina principal, podendo selecionar qualquer banner extra (do 1 ao 11) para exibi&#x00E7;&#x00E3;o, construir uma lista de produto personalizada utilizando filtros e muito mais. fa&#x00E7;a uma c&#x00F3;pia e salve o Conte&#x00FA;do abaixo antes de realizar qualquer altera&#x00E7;&#x00E3;o!.</p>
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Configura&#x00E7;&#x00E3;o dos Banners</label>
+                    <textarea class="form-control" name="home_banner_config" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div>
+                    <b>Preencha seguindo as orienta&#x00E7;&#x00F5;es abaixo:</b>
+                    <ul>
+                        <li>1. Posi&#x00E7;&#x00E3;o: "topo", "meio" ou "baixo"</li>
+                        <li>2. Tipo do banner: extra1 ~ extra12</li>
+                        <li>3. Ativar Slider?: "slider" ou em branco (O cadastro do banner deve conter mais de uma imagem)</li>
+                        <li>4. Classe CSS Colunas: "col" + 1~12 + "Em Branco", "sm", "md", "lg"</li>
+                        <li>5. Classe CSS personalizada: "classe_css" ou em branco</li>                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label>Configura&#x00E7;&#x00E3;o da Listagem de Produtos</label>
+                    <textarea class="form-control" name="home_product_config" rows="6"></textarea>
+                </div>                    
+            </div>
+            <div class="col-xs-6">
+                <div>
+                    <b>Preencha seguindo as orienta&#x00E7;&#x00F5;es abaixo:</b>
+                    <ul>
+                        <li>1. Posi&#x00E7;&#x00E3;o: "topo", "meio" ou "baixo"</li>
+                        <li>2. T&#x00ED;tulo da sess&#x00E3;o: Texto livre</li>
+                        <li>3. Ativar Slider?: "slider" ou em branco</li>
+                        <li>4. Filtro dos produtos: "featured", "new", "free_shipping", "available", "promotion" ou em branco</li>
+                        <li>5. Quantidade limite de produtos: N&#x00FA;mero ou em branco</li>
+                        <li>6. Ordena&#x00E7;&#x00E3;o dos produtos: "id", "name", "price", "price_offer", "stock" ou em branco</li>
+                        <li>7. Filtrar por categorias: "id_da_categoria", "['id_categoria_1','id_categoria_2']" ou em branco</li>
+                        <li>8. Filtrar por marcas: Nome da marca</li>
+                        <li>9. Tipo da lista de produto: "1", "2", "3"</li>
+                        <li>10. Classe CSS personalizada: "classe_css" ou em branco</li>
+                    </ul>
+                </div>
+            </div>
+        </div> --> 
+        <hr></hr>
+        <div class="content-section-maneira">
+            <div class="box-section">
+                <div class="title flex justify-between align-center item">
+                    <div class="flex">
+                        <div class="title-view" data-number="1">
+                            <span>Informe o t&iacute;tulo da primeira vitrine de produtos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title flex justify-between align-center">
+                    <span>Exibir primeira vitrine? </span>
+                    <label class="check-drag">
+                        <input type="checkbox" name="showcase_show_1" value="1">
+                        <span class="icon"></span>
+                    </label>
+                </div>
+                <div class="content-section">
+                    <label class="input-area max">
+                        <span class="name">Categorias da vitrine (separados por vírgula)</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_type_1">
+                    </label>
+                    <label class="input-area max">
+                        <span class="name">t&iacute;tulo da vitrine novidades</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_title_1">
+                    </label>
+    
+                    <div class="title flex justify-between align-center">
+                        <span>Como deseja exibir a vitrine de produtos? </span>
+                    </div>
+                    <div class="content-section">
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_1" value="1">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine <strong>em carrossel de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_1" value="0">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine em <strong>grade de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="featured">Escolha a quantidade de produtos a ser exibido na vitrine
+                    </div>
+                    <div class="item flex">
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_1" value="4">
+                                <div class="dot"></div>
+                                <div class="text">4</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_1" value="8">
+                                <div class="dot"></div>
+                                <div class="text">8</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_1" value="12">
+                                <div class="dot"></div>
+                                <div class="text">12</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_1" value="16">
+                                <div class="dot"></div>
+                                <div class="text">16</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-section">
+                <div class="title flex justify-between align-center item">
+                    <div class="flex">
+                        <div class="title-view" data-number="2">
+                            <span>Informe o t&iacute;tulo da segunda vitrine de produtos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title flex justify-between align-center">
+                    <span>Exibir segunda vitrine? </span>
+                    <label class="check-drag">
+                        <input type="checkbox" name="showcase_show_2" value="1">
+                        <span class="icon"></span>
+                    </label>
+                </div>
+                <div class="content-section">
+                    <label class="input-area max">
+                        <span class="name">Categorias da vitrine (separados por vírgula)</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_type_2">
+                    </label>
+                    <label class="input-area max">
+                        <span class="name">t&iacute;tulo da vitrine produtos destaque</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_title_2">
+                    </label>
+                    <div class="title flex justify-between align-center">
+                        <span>Como deseja exibir a vitrine de produtos? </span>
+                    </div>
+                    <div class="content-section">
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_2" value="1">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine <strong>em carrossel de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_2" value="0">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine em <strong>grade de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured">Escolha a quantidade de produtos a ser exibido na vitrine
+                    </div>
+                    <div class="item flex">
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_2" value="4">
+                                <div class="dot"></div>
+                                <div class="text">4</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_2" value="8">
+                                <div class="dot"></div>
+                                <div class="text">8</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_2" value="12">
+                                <div class="dot"></div>
+                                <div class="text">12</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_2" value="16">
+                                <div class="dot"></div>
+                                <div class="text">16</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-section">
+                <div class="title flex justify-between align-center item">
+                    <div class="flex">
+                        <div class="title-view" data-number="3">
+                            <span>Informe o t&iacute;tulo da terceira vitrine de produtos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title flex justify-between align-center">
+                    <span>Exibir segunda vitrine? </span>
+                    <label class="check-drag">
+                        <input type="checkbox" name="showcase_show_3" value="1">
+                        <span class="icon"></span>
+                    </label>
+                </div>
+                <div class="content-section">
+                    <label class="input-area max">
+                        <span class="name">Categorias da vitrine (separados por vírgula)</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_type_3">
+                    </label>
+                    <label class="input-area max">
+                        <span class="name">t&iacute;tulo da vitrine mais vendidos</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_title_3">
+                    </label>
+                    <div class="title flex justify-between align-center">
+                        <span>Como deseja exibir a vitrine de produtos? </span>
+                    </div>
+                    <div class="content-section">
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_3" value="1">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine <strong>em carrossel de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_3" value="0">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine em <strong>grade de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured">Escolha a quantidade de produtos a ser exibido na vitrine
+                    </div>
+                    <div class="item flex">
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_3" value="4">
+                                <div class="dot"></div>
+                                <div class="text">4</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_3" value="8">
+                                <div class="dot"></div>
+                                <div class="text">8</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_3" value="12">
+                                <div class="dot"></div>
+                                <div class="text">12</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_3" value="16">
+                                <div class="dot"></div>
+                                <div class="text">16</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-section">
+                <div class="title flex justify-between align-center item">
+                    <div class="flex">
+                        <div class="title-view" data-number="4">
+                            <span>Informe o t&iacute;tulo da quarta vitrine de produtos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title flex justify-between align-center">
+                    <span>Exibir segunda vitrine? </span>
+                    <label class="check-drag">
+                        <input type="checkbox" name="showcase_show_4" value="1">
+                        <span class="icon"></span>
+                    </label>
+                </div>
+                <div class="content-section">
+                    <label class="input-area max">
+                        <span class="name">Tipo de vitrine</span>
+                        <select class="select-input" name="showcase_type_4">
+                            <option value="">Selecione</option>
+                            <option value="top_seller">Mais vistos</option>
+                            <option value="new">Novidades</option>
+                            <option value="featured">Em destaque</option>
+                            <option value="free_shipping">Frete Gr&#x00E1;tis</option>
+                            <option value="promotion">Promo&#x00E7;&#x00E3;o</option>
+                        </select>
+                    </label>
+                    <label class="input-area max">
+                        <span class="name">t&iacute;tulo da vitrine promo&#x00E7;&#x00E3;o</span>
+                        <input type="text" class="encode-characters"
+                            placeholder="Digite o t&iacute;tulo da vitrine" name="showcase_title_4">
+                    </label>
+                    <div class="title flex justify-between align-center">
+                        <span>Como deseja exibir a vitrine de produtos? </span>
+                    </div>
+                    <div class="content-section">
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_4" value="1">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine <strong>em carrossel de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="item flex justify-between">
+                            <div class="list-radio">
+                                <label class="option flex align-center">
+                                    <input type="radio" name="showcase_carrosel_4" value="0">
+                                    <div class="dot"></div>
+                                    <div class="text">Exibir vitrine em <strong>grade de
+                                            produtos</strong> </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured">Escolha a quantidade de produtos a ser exibido na vitrine
+                    </div>
+                    <div class="item flex">
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_4" value="4">
+                                <div class="dot"></div>
+                                <div class="text">4</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_4" value="8">
+                                <div class="dot"></div>
+                                <div class="text">8</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_4" value="12">
+                                <div class="dot"></div>
+                                <div class="text">12</div>
+                            </label>
+                        </div>
+                        <div class="list-radio">
+                            <label class="option flex align-center">
+                                <input type="radio" name="showcase_quantity_4" value="16">
+                                <div class="dot"></div>
+                                <div class="text">16</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Banners Tarja</h3>
+                 
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_1" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_1">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_1">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_2" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_2">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_2">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_3" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_3">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_3">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_4" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_4">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_4">        
+                        </div>
+                    </div>
+                </div>   
+                
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_5" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_5">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_5">        
+                        </div>
+                    </div>
+                </div> 
+
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="banner_tarja_img_6" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="banner_tarja_title_6">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="banner_tarja_desc_6">        
+                        </div>
+                    </div>
+                </div> 
+            </div>  
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="banner_tarja_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. Links</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="banner_tarja_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. T&#x00ED;tulos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="banner_tarja_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Descri&#x00E7;&#x00E3;o</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="banner_tarja_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Bordas</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="banner_tarja_color5">        
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>          
+        </div> 
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Barra de Vantagens</h3>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Visibilidade</label>
+                            <select class="form-control" name="benefits_visibility">
+                                <option value="0">N&#x00E3;o Exibir</option>
+                                <option value="1">Acima da barra do topo/Cabe&#x00E7;alho</option>
+                                <option value="2">Abaixo do Cabe&#x00E7;alho</option>
+                                <option value="3">Abaixo do banner slider</option>
+                                <option value="4">Embutido no In&#x00ED;cio do rodap&#x00E9;</option>                                
+                            </select>
+                        </div>
+                    </div>
+                </div>                
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="benefits_img_1" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="benefits_title_1">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="benefits_desc_1">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="benefits_img_2" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="benefits_title_2">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="benefits_desc_2">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="benefits_img_3" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="benefits_title_3">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="benefits_desc_3">        
+                        </div>
+                    </div>
+                </div>  
+                <hr></hr>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label>&#x00ED;cone</label>
+                            <input type="file" name="benefits_img_4" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>T&#x00ED;tulo</label>
+                            <input type="text" class="form-control" name="benefits_title_4">        
+                        </div>
+                        <div class="form-group">
+                            <label>Descri&#x00E7;&#x00E3;o</label>
+                            <input type="text" class="form-control" name="benefits_desc_4">        
+                        </div>
+                    </div>
+                </div>                
+            </div>  
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="benefits_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. Links</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="benefits_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. T&#x00ED;tulos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="benefits_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Descri&#x00E7;&#x00E3;o</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="benefits_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Bordas</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="benefits_color5">        
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>          
+        </div> 
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>Instagram</h3>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" name="instagram_user">        
+                </div>
+                <div class="form-group">
+                    <label>Quantidade de Fotos</label>
+                    <select class="form-control" name="instagram_quantity">
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>      
+                </div>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo da sess&#x00E3;o</label>
+                    <input type="text" class="form-control" name="instagram_title">        
+                </div>
+                <div class="form-group">
+                    <label>Tipo de exibi&#x00E7;&#x00E3;o</label>
+                    <select class="form-control" name="instagram_type">
+                        <option value="1">Lado a lado, sem T&#x00ED;tulo</option>
+                        <option value="2">Centralizado, com T&#x00ED;tulo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <h3>Outras  Op&#x00E7;&#x00F5;es</h3>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo da Guia de Depoimentos</label>
+                    <input type="text" class="form-control" name="testimonials_title">   
+                </div>
+                <div class="form-group">
+                    <label>Exibir &#x00FA;ltimos Depoimentos?</label>
+                    <select class="form-control" name="testimonials_status">
+                        <option value="0">N&#x00E3;o</option>
+                        <option value="1">Sim</option>
+                    </select>      
+                </div>
+             
+                <h3>Estrelas Depoimentos</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>"Estrelas" vazias</label>
+                            <input type="file" name="testimonials_empty" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>"Estrelas" preenchidas</label>
+                            <input type="file" name="testimonials_validated" class="form-control" />
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="block-group">
+        <div class="page-header">
+            <h1>4. Newsletter</h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3> Op&#x00E7;&#x00F5;es</h3>
+                <div class="form-group">
+                    <label>Exibir somente na home?</label>
+                    <select class="form-control" name="newsletter_visible_only">
+                        <option value="home">Sim</option>
+                        <option value="">N&#x00E3;o, em todas as p&#x00E1;ginas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo da sess&#x00E3;o</label>
+                    <input type="text" class="form-control" name="newsletter_title">        
+                </div>
+                <div class="form-group">
+                    <label>SubT&#x00ED;tulo da sess&#x00E3;o</label>
+                    <input type="text" class="form-control" name="newsletter_subtitle">        
+                </div>
+                <div class="form-group">
+                    <label>Tipo de exibi&#x00E7;&#x00E3;o</label>
+                    <select class="form-control" name="newsletter_type">
+                        <option value="1">Bloco padr&#x00E3;o da home</option>
+                        <option value="2">Anexado ao rodap&#x00E9; (Somente T&#x00ED;tulo)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. T&#x00ED;tulos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. Destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. Texto Leve</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Bot&#x00E3;o</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color4">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>5. Campos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color5">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>6. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="newsletter_color6">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>  
+    <div class="block-group">
+        <div class="page-header">
+            <h1>5. rodap&#x00E9;</h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>T&#x00ED;tulos</h3>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo Guia #1</label>
+                    <input type="text" class="form-control" name="footer_title1">        
+                </div>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo Guia #2</label>
+                    <input type="text" class="form-control" name="footer_title2">        
+                </div>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo Guia #3</label>
+                    <input type="text" class="form-control" name="footer_title3">        
+                </div>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo Guia #4</label>
+                    <input type="text" class="form-control" name="footer_title4">        
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <h3>Redes Sociais</h3>
+                <div class="form-group">
+                    <label>Link Facebook</label>
+                    <input type="text" class="form-control" name="facebook">        
+                </div>
+                <div class="form-group">
+                    <label>Link Twitter</label>
+                    <input type="text" class="form-control" name="twitter">        
+                </div>
+                <div class="form-group">
+                    <label>Link Instagram</label>
+                    <input type="text" class="form-control" name="instagram">        
+                </div>
+                <div class="form-group">
+                    <label>Link Pinterest</label>
+                    <input type="text" class="form-control" name="pinterest">        
+                </div>
+            </div>
+        </div>
+        <hr></hr>        
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Estrutura</h3>
+                <div class="form-group">
+                    <label>Tipo de exibi&#x00E7;&#x00E3;o</label>
+                    <select class="form-control" name="footer_type">
+                        <option value="1">p&#x00E1;ginas / Atendimento / Pagamento / Social</option>
+                        <option value="2">p&#x00E1;ginas + Social (Links) - Atendimento / p&#x00E1;ginas / Pagamento </option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>p&#x00E1;ginas - Menu #1</label>
+                            <textarea class="form-control" name="footer_list_1" rows="6"></textarea> 
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>p&#x00E1;ginas - Menu #2</label>
+                            <textarea class="form-control" name="footer_list_2" rows="6"></textarea> 
+                        </div>
+                    </div>
+                </div>
+
+                <h3>&#x00ED;cones</h3>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="file" name="footer_img_1" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="file" name="footer_img_2" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="file" name="footer_img_3" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="form-group">
+                            <label>Atendimento</label>
+                            <input type="file" name="footer_img_4" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <h3>Cores</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>1. Fundo</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="footer_color1">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>2. T&#x00ED;tulos</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="footer_color2">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>3. Links</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="footer_color3">        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>4. Destaque</label>
+                            <div class="input-group colored">
+                                <div class="input-group-addon">
+                                    <div class="color-picker"></div>
+                                </div>
+                                <input type="text" class="form-control" name="footer_color4">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <div class="block-group">
+        <div class="page-header">
+            <h1>6. Cron&#x00F4;metro</h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>T&#x00ED;tulos</h3>
+                <div class="form-group">
+                    <label>T&#x00ED;tulo Principal </label>
+                    <input type="text" class="form-control" name="title_cronos">        
+                </div>
+                <div class="form-group">
+                    <label>Subtitulo</label>
+                    <input type="text" class="form-control" name="subtitle_cronos">        
+                </div>
+                <div class="form-group">
+                    <label>Link do Bot&#x00E3;o</label>
+                    <input type="text" class="form-control" name="link_cronos">        
+                </div>
+                <div class="form-group">
+                    <label>Data de expira&#x00E7;&#x00E3;o</label>
+                    <input type="date" class="form-control" name="end_cronos">        
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <h3>Cores</h3>
+                <div class="form-group">
+                    <label>1. Fundo</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="fundo_cronos">        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Cor de destaque</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="destaque_cronos">        
+                    </div>
+                </div>
+
+                
+                <div class="form-group">
+                    <label>3. Cor do texto</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="texto_cronos">        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>3. Cor do texto destacado</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="texto_destacado_cronos">        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Cor do tempo</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="time_color_cronos">        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Cor do Bot&#x00E3;o confira</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="btn_cronos">        
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>3. Cor do texto Bot&#x00E3;o confira</label>
+                    <div class="input-group colored">
+                        <div class="input-group-addon">
+                            <div class="color-picker"></div>
+                        </div>
+                        <input type="text" class="form-control" name="btn_text_cronos">        
+                    </div>
+                </div>
+                
+            </div>
+        </div> 
+    </div>
+
+
+
+
+
+    <div class="block-group">
+        <div class="page-header">
+            <h1>Avan&#x00E7;ado - C&#x00F3;digos Extras</h1>
+        </div>
+        <div class="alert alert-danger" role="alert">
+            <b>Aten&#x00E7;&#x00E3;o:</b> Qualquer c&#x00F3;digo inclu&#x00ED;do e/ou alterado &#x00E9; registrado nos logs e &#x00E9; de total responsabilidade do autor. s&#x00F3; fa&#x00E7;a algo se souber o que est&#x00E1; fazendo.
+        </div>  
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label>Dentro da <code>&lt;head&gt;</code></label>
+                    <textarea class="form-control" name="head_code" rows="10"></textarea>
+                </div>
+            </div>
+        </div>  
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label>In&#x00ED;cio do <code>&lt;body&gt;</code></label>
+                    <textarea class="form-control" name="body_code" rows="10"></textarea>
+                </div>
+            </div>
+        </div>  
+        <hr></hr>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label>Fim do <code>&lt;body&gt;</code></label>
+                    <textarea class="form-control" name="footer_code" rows="10"></textarea>
+                </div>
+            </div>
+        </div>  
+
+        <hr></hr>
+
+        <div class="tab-show">
+            <div class="title-col">Tabelas de Medidas & Provador</div>
+            <div class="alert-admake">
+                <div class="title-col">Aten&#x00E7;&#x00E3;o!</div>
+                <div class="msg">
+                    Ao preencher as <strong>Tabelasm de Medidas</strong> a mesma ser&#x00E1; utilizada na cria&#x00E7;&#x00E3;o da <strong>Tabela de Medidas</strong> e tambem no <strong>Provador Virtual</strong> como base do calculo.
+                    <br />
+                    Siga os padr&#x00F5;es corretamente para que as funcionalidades N&#x00E3;o parem de funcionar e sempre mantenha um <strong>Backup</strong> da ultima vers&#x00F3;o.
+                    <br />
+                    <br />
+                    <b style="color: red;">INFORMAR O NOME DA MARCA EXATAMENTE COMO NO CADASTRO</b>
+                </div>
+            </div>
+
+            <div class="box-section">
+                <div class="title flex justify-between align-center">
+                    <span>Tabelas de medidas por <b>MARCA</b> em formato JSON</span>
+                </div>
+                <div class="content-section">
+                    <label class="input-area" style="width: 100%;">
+                        <span class="name">JSON MARCAS</span>
+                        <textarea type="text" name="json_medidas_marcas"  style="width: 100%; height: 300px;"></textarea>
+                    </label>
+                </div>
+            </div>
+
+            <h5>padr&#x00F5;es</h5>
+            <ol>
+                <li>Sempre finalizar um <b>BLOCO</b> com virgual (,). Um <b>BLOCO</b> &#x00E9; o conteudo entre as chaves (<b>{</b> e <b>}</b>)</li>
+                <li>Sempre usar aspas (") nos <b>NOMES DAS MARCAS</b></li>
+                <li>Sempre usar aspas (") nos <b>TAMANHOS</b</li>
+                <li>Sempre usar aspas (") nas <b>LETRAS DAS MEDIDAS</b></li>
+                <li><b>SIGNIFICADOS DAS LITRAS</b></li>
+                <li><b>b</b> = Medida m&#x00E1;xima do busto</li>
+                <li><b>c</b> = Medida m&#x00E1;xima da cintura</li>
+                <li><b>q</b> = Medida m&#x00E1;xima do quadril</li>
+                <li>As medidas devem ser informados no formato de <b>N&#x00FA;meroS INTEIROS</b> e sem as aspas (")</li>
+            </ol>
+            <h5>Exemplo</h5>
+            <textarea disabled="disabled" readonly="readonly" style="width: 100%; height: 300px;">
+                {
+                    "NOME DA MARCA": {
+                        "f": { 
+                            "PP": {"b": 82, "c": 63, "q": 88 },
+                            "P": {"b": 90, "c": 71, "q": 96 },
+                            "M": {"b": 98, "c": 79, "q": 104 },
+                            "G": {"b": 106, "c": 87, "q": 112 },
+                            "GG": {"b": 114, "c": 95, "q": 120 },
+                        },
+                        "m": {
+                            "PP": {"b": 90, "c": 81, "q": 93 },
+                            "P": {"b": 96, "c": 85, "q": 97 },
+                            "M": {"b": 102, "c": 89, "q": 101 },
+                            "G": {"b": 108, "c": 93, "q": 105 },
+                            "GG": {"b": 114, "c": 97, "q": 109 },
+                        },
+                    },
+                }
+            </textarea>
+            
+        </div>
+    </div>  
+</div>
+<script>
+    $(document).ready(function(){
+        $('.colored input').each(function(){
+            pickColor(this);
+        });
+
+        $('.colored input').keyup(function(){
+            pickColor(this);
+        });
+    });
+    
+
+    function pickColor(oObj){
+        var color = $(oObj).val();
+        $(oObj).closest('.colored').find('.color-picker').css('background-color', color)
+    }
+</script>

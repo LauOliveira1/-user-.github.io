@@ -1,0 +1,181 @@
+<style>
+	div.moment-nenza {
+		background-color: {{settings.fundo_cronos}};
+	}
+
+	div.moment-nenza div.content-nenza .text-promo h3 b .block-time {
+		color: {{settings.time_color_cronos}};
+		background-color: {{settings.destaque_cronos}};
+	}
+
+	div.moment-nenza div.content-nenza .text-promo h3 {
+		color: {{settings.texto_cronos}};
+	}
+
+	div.moment-nenza div.content-nenza .text-promo h3 b {
+		color: {{settings.texto_destacado_cronos}};
+	}
+
+	div.moment-nenza div.tabela {
+		background-color: {{settings.destaque_cronos}};
+	}
+
+	div.moment-nenza div.tabela div.item {
+		color: {{settings.time_color_cronos}};
+	}
+
+	a.link-promo {
+		background-color: {{settings.btn_cronos}};
+		color: {{settings.btn_text_cronos}};
+	}
+</style>
+<div class="moment-nenza">
+	<input type="hidden" name="endPromoBanner" id="endPromoBanner" value="{{settings.end_cronos}}">
+	<div class="container">
+		<div class="content-nenza">
+			<div class="text-promo">
+				<h3>
+					{{settings.title_cronos}}
+					<b>
+						{{settings.subtitle_cronos}}
+
+						<div class="block-time">
+							<div id="timeTotal"></div>h
+							<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+								xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"
+								width="50" height="50" x="0" y="0" viewBox="0 0 24 24"
+								style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+								<g>
+									<path
+										d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1zm0 20a9 9 0 1 1 9-9 9.011 9.011 0 0 1-9 9z"
+										fill="#000000" data-original="#000000" class=""></path>
+									<path d="M13 11.586V6a1 1 0 0 0-2 0v6a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414z"
+										fill="#000000" data-original="#000000" class=""></path>
+								</g>
+							</svg>
+						</div>
+					</b>
+				</h3>
+				<a class="link-promo" href="{{settings.link_cronos}}">
+					Confira!
+				</a>
+			</div>
+			<div class="tabela">
+				<div class="item">
+					<div class="numero" id="diaBanner"></div>
+					<div class="legenda">DIAS</div>
+				</div>
+				<div class="item">
+					<div class="numero" id="horaBanner"></div>
+					<div class="legenda">HORAS</div>
+				</div>
+				<div class="item">
+					<div class="numero" id="minutoBanner"></div>
+					<div class="legenda">MINUTOS</div>
+				</div>
+				<div class="item">
+					<div class="numero" id="segundoBanner"></div>
+					<div class="legenda">SEGUNDOS</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+{% if pages.current == 'home' %}
+<div class="banner-home-container">
+	<div class="banner-home {% if benefits_type != 3 %}mb-4{% endif %}">
+		{% set banners_ = not utils.is_mobile ? banners.home : banners.extra12 %}
+		{% if banners_.slides %}
+		<div class="slick-this">
+			{% for slide in banners_.slides %}
+			<div>
+				<a href="{{ slide.link }}" target="{{ slide.target }}">
+					<img src="{{ slide.image }}" alt="{{ slide.label }}">
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		{% if banners_.link %}
+		<a href="{{ banners_.link }}" target="{{ banners_.target }}">
+			{% endif %}
+			<img class="img-responsive" src="{{ banners_.src }}" alt="{{ banners_.label }}">
+			{% if banners_.link %}
+		</a>
+		{% endif %}
+		{% endif %}
+	</div>
+</div>
+{% endif %}
+<div class="row">
+	{% set split_row = row|split('|')%}
+	{% set this_banner = banners[split_row[1]] %}
+	{% if this_banner.slides or this_banner.src != "" %}
+
+	<div class="alpix_banner text-center  {{split_row[3]}} {{split_row[4]}}">
+		{% if this_banner.slides and split_row[3] == "slider" %}
+		<div class="slick-this">
+			{% for slide in this_banner.slides %}
+			<div>
+				<a href="{{ slide.link }}" target="{{ slide.target }}">
+					<img class="img-responsive" src="{{slide.src}}" alt="{{ slide.label }}">
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		{% if this_banner.link %}
+		<a href="{{ this_banner.link }}" target="{{ this_banner.target }}">
+			{% endif %}
+			<img class="img-responsive" src="{{ this_banner.src }}" alt="{{ this_banner.label }}">
+			{% if this_banner.link %}
+		</a>
+		{% endif %}
+		{% endif %}
+	</div>
+	{% endif %}
+	<!--<div class="col-md-3">-->
+	<!--    <img class="img-responsive" src="https://i.ibb.co/2kFXSqB/minibanner-BODY.jpg" alt="banner3">-->
+	<!--</div>-->
+	<!--<div class="col-md-3">-->
+	<!--    <img class="img-responsive" src="https://i.ibb.co/3NFnvGB/minibanner-FLARE.jpg" alt="banner2">-->
+	<!--</div>-->
+	<!--<div class="col-md-3">-->
+	<!--    <img class="img-responsive" src="https://i.ibb.co/2kFXSqB/minibanner-BODY.jpg" alt="banner3">-->
+	<!--</div>-->
+	<!--<div class="col-md-3">-->
+	<!--    <img class="img-responsive" src="https://i.ibb.co/DpCYYFQ/minibanner-SKINNY.jpg" alt="banner4">-->
+	<!--</div>-->
+</div>
+
+{% if pages.current == 'home' %}
+
+<div class="banner-tarja">
+	<div class="container">
+		<div class="content-tarja">
+			{% for i in range(0,7) %}
+			{% if attribute(settings, 'banner_tarja_img_' ~ loop.index) %}
+			<div class="item-tarja ">
+				<div class="content-item {% if loop.index > 2 %}bg-clear{% endif %}">
+					<div class="icon">
+						<img src="{{ themePath }}{{ attribute(settings, 'banner_tarja_img_' ~ loop.index) }}"
+							alt="{{ attribute(settings, 'banner_tarja_title_' ~ loop.index) }} {{ attribute(settings, 'banner_tarja_desc_' ~ loop.index) }}">
+					</div>
+					<div class="text">
+						<strong>
+							{{ attribute(settings, 'banner_tarja_title_' ~ loop.index) }}
+						</strong>
+
+						<br>
+						{{ attribute(settings, 'banner_tarja_desc_' ~ loop.index) }}
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endif %}
