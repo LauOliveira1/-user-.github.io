@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="41" viewBox="0 0 20 41">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #7d7d7d;
+        stroke-width: 1px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="seta_dir" data-name="seta dir" class="cls-1" d="M1598.75,1829l18.25,20-18.25,20" transform="translate(-1597.5 -1828.5)"/>
+</svg>

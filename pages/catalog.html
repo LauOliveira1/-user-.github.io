@@ -1,0 +1,62 @@
+<div class="catalog-header">
+    
+    {% if banner.title %}
+        <div class="banner banner-title ">
+            {{ banner.title }}
+        </div>
+    {% endif %}
+    
+    <h1 class="font-weight-bold text-uppercase tc1 mt-4 mb-4 h1 {{ products|length == 0 ? 'text-center'}}">{{ category.name }}</h1>
+    
+    {% if products|length > 0 %}
+        <div class="system-filter">
+            {% if settings.compare and 1 != 1%}
+                <a href="/loja/comparador.php?loja={{store.id}}&IdDep={{category.id}}" class="button-compare">{{ Translation("comparar_produto") }}</a>
+            {% endif %}
+            
+            {% element 'snippets/filter' {
+                'brands': category.brands
+            } %}
+        </div>  
+      
+    {% endif %} 
+    
+</div>
+
+{% if products|length > 0 %}
+
+    <div class="catalog-content">
+        {% element 'snippets/alpix-product-listing' {
+            "products": products,
+            "product_list_type": settings.catalog_list_type|default(settings.product_list_type|default(1)),
+        } %}
+        
+    </div>
+
+    <div class="catalog-footer">
+        {% element 'snippets/paginate' %}
+    </div>
+    
+   
+    {% if category.small_description %}
+  
+    <div class="category-description">
+        {{ category.small_description }}
+    </div>
+    {% endif %}   
+ 
+{% else %}
+    <div class="text-center my-5">
+        <p class="p-5 h2 tc1">Nenhum produto encontrado.</p>
+        <a class=" w100 mt-4 text-uppercase font-weight-bold py-3 px-4 h4 transition opacity border-0 bc3 tc-white br-1"" href="/">Voltar para a página inicial</a>
+    </div> 
+
+{% endif %}
+
+
+
+{% if banner.bottom %}
+    <div class="banner banner-bottom ">
+        {{ banner.bottom }}
+    </div>
+{% endif %}

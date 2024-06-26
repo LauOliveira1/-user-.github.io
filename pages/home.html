@@ -1,0 +1,449 @@
+<!--
+    Homepage Product Rows Example
+    -----
+    topo|Mais Vendidos|slider|featured|8|stock|10| |1|classePersonalizada///meio|Destaque| | |8|price| | |2 ///baixo|Acabaram de Chegar|slider| |12| | | |3 
+
+    Homepage Banners Rows Example
+    -----
+    topo|extra1||col-6///topo|extra2||col-6///topo|extra3||col-6///meio|extra4||col-3///meio|extra5||col-3///   
+    
+-->
+
+{% set debug_homepage_rows = settings.home_product_config|default('meio|Destaques||featured|8| | | |1|my-5///')%}
+{% set debug_homepage_rows_b = settings.home_banner_config|default('topo|extra1||col-12 col-lg-5 mb-4 mb-lg-0|///topo|extra2||col-12 col-lg-6 mb-4 mb-lg-0|///')%}
+
+
+{#{% set homepage_rows = settings.homepage_rows|split('///')%}#}
+{% set homepage_rows    = debug_homepage_rows|split('///')%}
+{% set topo_rows    = [] %}
+{% set meio_rows    = [] %}
+{% set baixo_rows   = [] %}
+{% for row in homepage_rows %}
+	{% set row_identifier = row|split('|')[0]|trim %}
+	{% if row_identifier == "topo" %}
+		{% set topo_rows = topo_rows|merge([row]) %}
+	{% elseif row_identifier == "meio" %}
+		{% set meio_rows = meio_rows|merge([row]) %}
+	{% elseif row_identifier == "baixo" %}
+		{% set baixo_rows = baixo_rows|merge([row]) %}
+	{% endif %}
+{% endfor %}
+
+{#{% set homepage_rows_b  = settings.homepage_rows_b|split('///')%}#}
+{% set homepage_rows_b  = debug_homepage_rows_b|split('///')%}
+{% set topo_rows_b      = [] %}
+{% set meio_rows_b      = [] %}
+{% set baixo_rows_b     = [] %}
+{% for row in homepage_rows_b %}
+	{% set row_identifier = row|split('|')[0]|trim %}
+	{% if row_identifier == "topo" %}
+		{% set topo_rows_b = topo_rows_b|merge([row]) %}
+	{% elseif row_identifier == "meio" %}
+		{% set meio_rows_b = meio_rows_b|merge([row]) %}
+	{% elseif row_identifier == "baixo" %}
+		{% set baixo_rows_b = baixo_rows_b|merge([row]) %}
+	{% endif %}
+{% endfor %}
+
+
+
+
+
+
+{#<div id="topo">
+    <div class="row">
+    {% for row in topo_rows_b %}
+        {% set split_row = row|split('|')%}   
+            {% set this_banner = banners[split_row[1]] %}
+            {% if this_banner.slides or this_banner.src != "" %}    
+                
+            <div class="alpix_banner text-center  {{split_row[3]}} {{split_row[4]}}">                
+                {% if this_banner.slides and split_row[3] == "slider" %}
+                    <div class="slick-this">
+                        {% for slide in this_banner.slides %}
+                        <div>
+                            <a href="{{ slide.link }}" target="{{ slide.target }}">
+                                <img class="img-responsive" src="{{slide.src}}" alt="{{ slide.label }}">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}                    
+                    {% if this_banner.link %}<a href="{{ this_banner.link }}" target="{{ this_banner.target }}">{% endif %}
+                        <img class="img-responsive" src="{{ this_banner.src }}" alt="{{ this_banner.label }}">
+                    {% if this_banner.link %}</a>{% endif %}                    
+                {% endif %}
+            </div>
+            {% endif %}
+    {% endfor %}
+    </div>
+
+    {% for row in topo_rows %}
+        {% set split_row = row|split('|')%}   
+        {% set filter_config = {} %}
+        {% if split_row[3]|trim != "" %}{% set filter_config = filter_config|merge({'filter' : split_row[3]|trim})%}{% endif %}
+        {% if split_row[4]|trim != "" %}{% set filter_config = filter_config|merge({'limit' : split_row[4]|trim})%}{% endif %}
+        {% if split_row[5]|trim != "" %}{% set filter_config = filter_config|merge({'order' : split_row[5]|trim})%}{% endif %}
+        {% if split_row[6]|trim != "" %}{% set filter_config = filter_config|merge({'categories' : split_row[6]|trim})%}{% endif %}
+        {% if split_row[7]|trim != "" %}{% set filter_config = filter_config|merge({'brands' : split_row[7]|trim})%}{% endif %}
+        {% set products = Products(filter_config) %}
+        {% element 'snippets/alpix-product-listing' {
+            "products": products,
+            "showcase_title": split_row[1]|trim,
+            "slider_this": split_row[2]|trim,
+            "product_list_type": split_row[8]|trim,
+            "custom_css" : split_row[9]|trim
+        } %}
+    {% endfor %}
+</div>#}
+
+<div id="meio">
+	<div class="row nenza-slick-banner">
+		<div class="alpix_banner text-center">
+			<div class="slick-this-nenza">
+				{% for slide in banners.extra2.slides %}
+					<div class="link-item-nenza">
+						<a href="{{ slide.link }}" target="{{ slide.target }}">
+							<img class="img-responsive" src="{{slide.image}}" alt="{{ slide.label }}">
+						</a>
+					</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+
+	{# First showcase #}
+	{% if settings.showcase_show_1 == 1 %} 
+	{% set slide = settings.showcase_carrosel_1 == 1 ? true : false %}
+
+
+	{% set vitrine_1 = Products({
+		'limit': settings.showcase_quantity_1,
+		'categories': [settings.showcase_type_1],
+		'order': 'rand',	
+	}) %}
+
+
+	{% if vitrine_1|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						{{settings.showcase_title_1}} 
+					</h2>
+				</div>
+				<div class="content-vitrine {{ slide == true or utils.is_mobile  ?  'vitrine-slick' : '' }} prod-list prod-list-v2">
+					{% for product in vitrine_1 %}
+
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% endif %}
+
+	{# Second showcase #}
+	{% if settings.showcase_show_2 == 1 %} 
+	{% set slide = settings.showcase_carrosel_2 == 1 ? true : false %}
+
+
+	{% set vitrine_2 = Products({
+		'limit': settings.showcase_quantity_2,
+		'categories': [settings.showcase_type_2],
+		'order': 'rand',	
+	}) %}
+
+
+	{% if vitrine_2|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						{{settings.showcase_title_2}} 
+					</h2>
+				</div>
+				<div class="content-vitrine {{ slide == true or utils.is_mobile  ?  'vitrine-slick' : '' }} prod-list prod-list-v2">
+					{% for product in vitrine_2 %}
+
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% endif %}
+
+
+	{# Third showcase #}
+	{% if settings.showcase_show_3 == 1 %} 
+	{% set slide = settings.showcase_carrosel_3 == 1 ? true : false %}
+
+
+	{% set vitrine_3 = Products({
+		'limit': settings.showcase_quantity_3,
+		'categories': [settings.showcase_type_3],
+		'order': 'rand',	
+	}) %}
+
+
+	{% if vitrine_3|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						{{settings.showcase_title_3}} 
+					</h2>
+				</div>
+				<div class="content-vitrine {{ slide == true or utils.is_mobile ?  'vitrine-slick' : '' }} prod-list prod-list-v2">
+					{% for product in vitrine_3 %}
+
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% endif %}
+
+
+	{# Fourth showcase #}
+	{% if settings.showcase_show_4 == 1 %} 
+	{% set slide = settings.showcase_carrosel_4 == 1 ? true : false %}
+
+	{% if settings.showcase_type_4 == 'top_seller' %}
+		{% set vitrine_4 = Products({
+			'limit': settings.showcase_quantity_4,
+			'order': {'quantity_sold': 'desc'},
+		}) %}
+	{% else %}
+		{% set vitrine_4 = Products({
+			'limit': settings.showcase_quantity_4,
+			'filter': [settings.showcase_type_4],
+			'order': 'rand',	
+		}) %}		
+	{% endif %}
+
+
+
+	{% if vitrine_4|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						{{settings.showcase_title_4}} 
+					</h2>
+				</div>
+				<div class="content-vitrine {{ slide == true or utils.is_mobile  ?  'vitrine-slick' : '' }} prod-list prod-list-v2">
+					{% for product in vitrine_4 %}
+
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	{% endif %}
+
+	{# {% for row in meio_rows %}
+								{% set split_row = row|split('|')%}
+								{% set filter_config = {} %}
+								{% if split_row[3]|trim != "" %}
+									{% set filter_config = filter_config|merge({'filter' : split_row[3]|trim})%}
+								{% endif %}
+								{% if split_row[4]|trim != "" %}
+									{% set filter_config = filter_config|merge({'limit' : split_row[4]|trim})%}
+								{% endif %}
+								{% if split_row[5]|trim != "" %}
+									{% set filter_config = filter_config|merge({'order' : split_row[5]|trim})%}
+								{% endif %}
+								{% if split_row[6]|trim != "" %}
+									{% set filter_config = filter_config|merge({'categories' : split_row[6]|trim})%}
+								{% endif %}
+								{% if split_row[7]|trim != "" %}
+									{% set filter_config = filter_config|merge({'brands' : split_row[7]|trim})%}
+								{% endif %}
+								{% set products = Products(filter_config) %}
+								{% element 'snippets/alpix-product-listing' {
+						            "products": products,
+						            "showcase_title": split_row[1]|trim,
+						            "slider_this": split_row[2]|trim,
+						            "product_list_type": split_row[8]|trim,
+						            "custom_css" : split_row[9]|trim
+						        } %}
+							{% endfor %} #}
+
+
+	{# {% set vitrine_0 = Products({
+		'filter': 'new',
+	    'order' :'rand',
+    }) %} #}
+
+	{# {% if vitrine_0|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						Novidades
+					</h2>
+				</div>
+				<div class="content-vitrine vitrine-slick-destaques prod-list prod-list-v2">
+					{% for product in vitrine_0 %}
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %} #}
+
+	{# {% set vitrine_2 = Products({
+			'limit': 20,
+			'categories': [13],
+			'order': 'rand',
+			
+	}) %}
+
+
+	{% if vitrine_2|length > 0 %}
+		<div class="vitrine">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						OUTLET
+					</h2>
+				</div>
+				<div class="content-vitrine vitrine-slick prod-list prod-list-v2">
+					{% for product in vitrine_2 %}
+
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+
+
+			</div>
+		</div>
+	{% endif %} #}
+{# 
+	{% set vitrine_1 = Products({
+		'order': {'quantity_sold': 'desc'},
+    }) %}
+
+	{% if vitrine_1|length > 0 %}
+		<div class="vitrine bg-grey">
+			<div class="container">
+				<div class="vitrine-title">
+					<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+						OS MAIS VISTOS
+					</h2>
+				</div>
+				<div class="content-vitrine vitrine-slick  prod-list prod-list-v2">
+					{% for product in vitrine_1 %}
+						{% set ranking = product.ranking %}
+						<div class="col-md-3 col-xs-6">
+							{% element 'snippets/alpix-product-snippets-2' {"product": product} %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %} #}
+
+
+</div>
+
+<div id="baixo">
+	{% for row in baixo_rows %}
+		{% set split_row = row|split('|')%}
+		{% set filter_config = {} %}
+		{% if split_row[3]|trim != "" %}
+			{% set filter_config = filter_config|merge({'filter' : split_row[3]|trim})%}
+		{% endif %}
+		{% if split_row[4]|trim != "" %}
+			{% set filter_config = filter_config|merge({'limit' : split_row[4]|trim})%}
+		{% endif %}
+		{% if split_row[5]|trim != "" %}
+			{% set filter_config = filter_config|merge({'order' : split_row[5]|trim})%}
+		{% endif %}
+		{% if split_row[6]|trim != "" %}
+			{% set filter_config = filter_config|merge({'categories' : split_row[6]|trim})%}
+		{% endif %}
+		{% if split_row[7]|trim != "" %}
+			{% set filter_config = filter_config|merge({'brands' : split_row[7]|trim})%}
+		{% endif %}
+		{% set products = Products(filter_config) %}
+		{% element 'snippets/alpix-product-listing' {
+            "products": products,
+            "showcase_title": split_row[1]|trim,
+            "slider_this": split_row[2]|trim,
+            "product_list_type": split_row[8]|trim,
+            "custom_css" : split_row[9]|trim
+        } %}
+	{% endfor %}
+
+	<div class="row">
+		{% for row in baixo_rows_b %}
+			{% set split_row = row|split('|')%}
+			{% set this_banner = banners[split_row[1]] %}
+			{% if this_banner.slides or this_banner.src != "" %}
+
+				<div class="alpix_banner text-center  {{split_row[3]}} {{split_row[4]}}">
+					{% if this_banner.slides and split_row[3] == "slider" %}
+						<div class="slick-this">
+							{% for slide in this_banner.slides %}
+								<div>
+									<a href="{{ slide.link }}" target="{{ slide.target }}">
+										<img class="img-responsive" src="{{slide.src}}" alt="{{ slide.label }}">
+									</a>
+								</div>
+							{% endfor %}
+						</div>
+					{% else %}
+						{% if this_banner.link %}
+							<a href="{{ this_banner.link }}" target="{{ this_banner.target }}">
+							{% endif %}
+							<img class="img-responsive" src="{{ this_banner.src }}" alt="{{ this_banner.label }}">
+							{% if this_banner.link %}
+							</a>
+						{% endif %}
+					{% endif %}
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+</div>
+
+{% for pages in pages.custom %}
+	{% if pages.info == "depoimentos_de_clientes" and settings.testimonials_status == 1 %}
+		<div id="alpix-testimonials">
+			<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+				{{settings.testimonials_title|default('Depoimentos')}}
+			</h2>
+			<div id="store-reviews">
+				{% element 'CustomerReview.reviews' %}
+			</div>
+		</div>
+	{% endif %}
+{% endfor %}

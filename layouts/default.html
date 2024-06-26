@@ -1,0 +1,225 @@
+{% spaceless %}
+<!doctype html>
+<html data-theme="{{ settings.extension_id }}" data-store="{{ store.id }}" class="page-{{ pages.current }}">
+<head>
+
+    <!-- tray charset -->
+    {{ html.charset() }}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Verificação Google Shopping -->
+    <meta name="google-site-verification" content="JzxngKKjFIAtkI3dMTQI9_0C5V0TKu70XVWg0636yOA" />
+
+    <!-- tray meta tags -->
+    {{ tray.meta }}
+
+    <!-- tray styles -->
+    {{ tray.styles }}
+
+    <!-- theme styles -->
+    <link rel="stylesheet" href="{{ asset('css/normalize.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap_413.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/alpix_somma_multitheme.css') }}" type="text/css">   
+    <!--<link rel="stylesheet" href="{{ asset('css/custom.css', {dynamic: true}) }}" type="text/css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/slick.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('css/slick-theme.css') }}"> -->
+    <!-- tray analytics -->
+    {{ tray.analytics }}
+
+    <!-- google tag manager -->
+    {{ googleTagManager.header(pages.current, tagManagerData) }}
+
+    <style>
+        :root{
+            --topbarcolor1:{{settings.topbar_color1}};
+            --topbarcolor2:{{settings.topbar_color2}};
+            --topbarcolor3:{{settings.topbar_color3}};
+            --topbarcolor4:{{settings.topbar_color4}};
+            --topbarcolor5:{{settings.topbar_color5}};
+
+            --benefitscolor1:{{settings.benefits_color1}};
+            --benefitscolor2:{{settings.benefits_color2}};
+            --benefitscolor3:{{settings.benefits_color3}};
+            --benefitscolor4:{{settings.benefits_color4}};
+            --benefitscolor5:{{settings.benefits_color5}};
+            
+
+            --headercolor1:{{settings.header_color1}};
+            --headercolor2:{{settings.header_color2}};
+            --headercolor3:{{settings.header_color3}};
+            --headercolor4:{{settings.header_color4}};
+            --headercolor5:{{settings.header_color5}};
+            --headercolor6:{{settings.header_color6}};
+            --headercolor7:{{settings.header_color7}};
+
+            --contentcolor1:{{settings.content_color1}};
+            --contentcolor2:{{settings.content_color2}};
+            --contentcolor3:{{settings.content_color3}};
+            --contentcolor4:{{settings.content_color4}};
+            --contentcolor5:{{settings.content_color5}};
+            --contentcolor6:{{settings.content_color6}};
+            --contentcolor7:{{settings.content_color7}};
+
+            --newslettercolor1:{{settings.newsletter_color1}};
+            --newslettercolor2:{{settings.newsletter_color2}};
+            --newslettercolor3:{{settings.newsletter_color3}};
+            --newslettercolor4:{{settings.newsletter_color4}};
+            --newslettercolor5:{{settings.newsletter_color5}};
+            --newslettercolor6:{{settings.newsletter_color6}};
+            
+            --footercolor1:{{settings.footer_color1}};
+            --footercolor2:{{settings.footer_color2}};
+            --footercolor3:{{settings.footer_color3}};
+            --footercolor4:{{settings.footer_color4}};
+
+            --instagramsize:{{98.666666 / settings.instagram_quantity }}vw;
+
+            --menufsize:{{settings.menu_fontsize_desktop}};
+            --dropdownfsize:{{settings.menu_fontsize_desktop}};
+            --topbarfsize:{{settings.topbar_fontsize_desktop}};
+
+            --testimonials_empty:url({{themePath ~ settings.testimonials_empty}});
+            --testimonials_validated:url({{themePath ~ settings.testimonials_validated}});
+        }
+
+        @media (max-width: 990px) {
+            :root{
+                --menufsize:{{settings.menu_fontsize_mobile}};
+                --dropdownfsize:{{settings.menu_fontsize_mobile}};
+                --topbarfsize:{{settings.topbar_fontsize_mobile}};
+            }
+        }
+    </style>
+
+
+    <link rel="stylesheet" href="{{ asset('css/ar8.css') }}">
+
+    {{settings.head_code}}
+</head>
+{% set benefits_type = settings.benefits_visibility %}
+<body id="alpix" class="{{utils.is_mobile ? 'on-mobile' : 'on-desktop'}} {{settings.round_fields == 1 ? 'rounded-fields'}}">
+    {{settings.body_code}}
+    <div id="alpix-beauty-alert" class="fade-target no-outline" style="display:none;">
+        <span class="p-3 text-center"></span>
+    </div>
+    {{ googleTagManager.top(pages.current, tagManagerData) }}
+
+    {#{% element 'snippets/messages' %}#}
+
+    {% if banner.extra8 %}
+        <div id="overlay">
+            <div class="img-content">
+                <div class="close-overlay">
+                    x
+                </div>
+                {{banner.extra8}}
+            </div>
+        </div>
+    {% endif %}
+    
+
+    <div class="application">
+        {% if benefits_type == 1 %}
+            {% element 'snippets/alpix-benefitsbar' %}
+        {% endif %}
+        {% element 'snippets/alpix-headers' %}
+        {% if benefits_type == 2 %}
+            {% element 'snippets/alpix-benefitsbar' %}
+        {% endif %}
+        {% element 'snippets/banner-home' {benefits_type:benefits_type}%}
+        {% if benefits_type == 3 %}
+            {% element 'snippets/alpix-benefitsbar'  %}
+        {% endif %}
+        <div class="container">
+            {% if pages.current == "search" and products|length == 0 %}
+            <div class="text-center my-5">
+                <p class="p-5 h2 tc1">Nenhum produto encontrado.</p>
+                <a class=" w100 mt-4 text-uppercase font-weight-bold py-3 px-4 h4 transition opacity border-0 bc3 tc-white br-1"" href="/">Voltar para a página inicial</a>
+            </div>    
+            {% else %}
+                {% if pages.current in ['catalog','search']  %}
+                <div class="row">
+                    <div class="col-12">
+                        {% element 'snippets/breadcrumb' { "class": 'breadcrumb'} %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    {% if pages.current in ["catalog","search"] and products|length > 0 %}
+                        <aside class="col-12 col-md-3 alpix-sidebar">
+                            {%  element 'sidebar-left' %}
+                        </aside>
+                    {% endif %}
+            
+                    <section class="page-content col-12 {{ pages.current in ["catalog","search"] and products|length > 0 ? 'col-md-9'}}">
+                        {{ content_for_layout }}
+                    </section>
+                </div>
+            {% endif %}
+        </div>
+        
+        
+        {% element 'snippets/alpix-footers' {benefits_type:benefits_type}%}
+        
+        {% if settings.hottags_position == 2 %}
+            <div class="tagcloud">
+                <h4>As palavras</h4>
+                <h3>{{ Translation('tags_mais_buscadas') }}</h3>
+                {% for tag in tags %}
+                  <a href="{{ tag.url }}" style="font-size: {{ tag.font_size }}%">{{ tag.word }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if pages.current in ['catalog', 'search', 'product'] %}
+            {% if settings.history_position == 2 %}
+                <section class="products-visited col-sm-12">
+                    <h4>{{ Translation('confira_tambem') }}</h4>
+                    <h3 class="related-title">{{ Translation('produtos_visitados') }}</h3>
+                    {% element 'snippets/history' {
+                        'store.id': store.id,
+                        'pages.current': pages.current,
+                        'category.id': category.id
+                    } %}
+                </section>
+            {% endif %}
+        {% endif %}
+
+        
+    </div>
+    
+    
+
+    <!-- tray -->
+    {% element 'snippets/modal' %}
+    {{ googleTagManager.bottom(pages.current, tagManagerData) }}
+    {{ tray.scripts }}
+    {{
+            html.script({
+                '0' : tray.paths.js ~ 'dist/application.min.js?' ~ utils.assets_version,
+                '1' : tray.paths.js ~ 'init.js?' ~ utils.assets_version
+            })
+    }}
+    {% element 'snippets/pageview' %}
+    {{ store.chat }}
+
+    <!-- theme scripts-->
+    <script type="text/javascript" src="{{ asset('js/slick.js') }}"></script>
+    {% if 'product' in pages.current %}
+    <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
+    {% endif %}
+    <script src="{{ asset('js/instafeed.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/ar8.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/alpix_somma.js') }}"></script>
+
+    {% element 'script-tabela' %}
+
+    {{settings.footer_code}}
+    
+</body>
+</html>
+{% endspaceless %}

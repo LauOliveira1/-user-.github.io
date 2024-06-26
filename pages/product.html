@@ -1,0 +1,389 @@
+{% set gallery_type = settings.gallery_type|default(1) %}
+{% if banner.title %}
+<div class="banner banner-title ">
+	{{ banner.title }}
+</div>
+{% endif %}
+
+{% for discount in ProgressiveDiscounts %}
+{% if discount.banner %}
+<img src="{{ discount.banner }}" alt="{{discount.name}}" />
+{% endif %}
+{% endfor %}
+
+<div class="d-none d-md-block">
+	{% element 'snippets/breadcrumb' { "class": 'breadcrumb'} %}
+</div>
+<section id="product-container" class="produto-wrapper product-detail" itemscope itemtype="http://schema.org/Product">
+	{% element 'snippets/schema-product' %}
+	<div class="row mt-4 mt-md-0">
+		<div class="col-12 col-lg-6 product-colum-left">
+			<div class="d-lg-none d-block">
+				<p class="product-name text-uppercase font-weight-bold h3 tc1 mb-2" itemprop="name">{{ product.name }}
+				</p>
+				{% element 'snippets/alpix-product-ranking' {
+				'ranking': product.ranking,
+				} %}
+				<p class="product-details p4 tc6 font-weight-normal">
+					{% if settings.show_product_stock %}
+					<span>Estoque:
+						<b>{{ product.stock }}</b>
+					</span>
+					{% endif %}
+					{{ productHelper.details() }}
+					{{ productHelper.icons() }}
+				</p>
+			</div>
+
+			{% if product.images %}
+			{% if gallery_type == 1 and not utils.is_mobile%}
+			<div class="row gallery_1">
+				<div class="col-2 product-gallery m-0 pr-0" id="gallery">
+					{% for image in product.images %}
+					<a href="javascript: void(0);" class="item mb-3 d-block" data-image="{{ image.full }}"
+						data-zoom-image="{{ image.full }}">
+						<img src='{{ image.full }}' />
+					</a>
+					{% endfor %}
+				</div>
+				<div class="col product-photo">
+					<img id="zoom" class="img-responsive" data-zoom-image="{{product.images[0].full}}"
+						src="{{product.images[0].full}}" />
+				</div>
+			</div>
+			{% else %}
+			<div class="gallery_2">
+				<div class="slick-this product-gallery mt-3 mt-lg-0">
+					{% for image in product.images %}
+					<div class="item">
+						<img src='{{ image.full }}' class="imagem_para_zoom" />
+					</div>
+					{% endfor %}
+				</div>
+				<div class="slick-this product-gallery-nav mt-2 mb-5 ">
+					{% for image in product.images %}
+					<div class="item px-2">
+						<img src='{{ image.full }}' />
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+			{% else %}
+			<div class="product-gallery no-image">
+				<img src="{{ asset('img/no-image.svg') }}" alt="Nenhuma imagem foi cadastrada">
+			</div>
+			{% endif %}
+
+			{% if product.video %}
+			<button type="button" class="smoothScroll item mb-3 d-block product_vid_side"
+				onclick="jQuery('.product_vid').toggle();">
+				<i class="fa fa-youtube-play"></i>
+				<span>Clique aqui e veja o vídeo</span>
+			</button>
+			<div class="product_vid" style="display:none;">
+				<iframe src="{{product.video}}?controls=0" width="560" height="315" frameborder="0"
+					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</div>
+			{% endif %}
+
+		</div>
+
+		<div class="col-12 col-lg-5 offset-lg-1 product-colum-right text-center">
+			{% if productHelper.banner() %}
+			{{ productHelper.banner() }}
+			{% endif %}
+
+			<h1 class="product-name d-none d-lg-block text-uppercase font-weight-bold h2 tc1 mb-3" itemprop="name">{{
+				product.name }}</h1>
+			{% element 'snippets/alpix-product-ranking' {
+			'ranking': product.ranking,
+			'total': true
+			} %}
+
+			<div class="product-labels clearfix mb-5" style="text-align:center;">
+				{{ productHelper.labels() }}
+			</div>
+
+			<div id="helper-discount " class=" text-center">
+				{% for discount in ProgressiveDiscounts %}
+				{% if discount.tag %}
+				<div class="product-discount-recursive-tag">{{discount.tag}}</div>
+				<div class="product-discount-recursive-desc">{{discount.description}}</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			<p class="d-none d-lg-block product-details p4 tc6 font-weight-normal  text-center">
+				{% if settings.show_product_stock %}
+				<span>Estoque:
+					<b>{{ product.stock }}</b>
+				</span>
+				{% endif %}
+				{{ productHelper.details() }}
+				{{ productHelper.icons() }}
+			</p>
+
+			<div class="provador-cta-box d-none" style="display: none;">
+				<a class="cta-open-provador btn-type-provador" style="display: none;margin-right: 10px;">
+					<svg class="d-none d-md-inline-block" width="24px" height="15px" viewBox="0 0 24 15" version="1.1"
+						xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<g transform="translate(-904.000000, -575.000000)" fill="#DBA78E" fill-rule="nonzero">
+								<g transform="translate(883.000000, 562.000000)">
+									<g transform="translate(21.000000, 13.000000)">
+										<path
+											d="M9.03428571,3.32571429 C9.21428571,3.32571429 9.36857143,3.17142857 9.36857143,2.99142857 C9.36857143,1.73142857 10.3971429,0.702857143 11.6571429,0.702857143 C12.9171429,0.702857143 13.9457143,1.73142857 13.9457143,2.99142857 C13.9457143,4.25142857 12.9171429,5.28 11.6571429,5.28 C11.4771429,5.28 11.3228571,5.43428571 11.3228571,5.61428571 L11.3228571,7.26 C11.3228571,7.44 11.4771429,7.59428571 11.6571429,7.59428571 C11.8371429,7.59428571 11.9914286,7.44 11.9914286,7.26 L11.9914286,5.92285714 C13.4571429,5.74285714 14.5885714,4.50857143 14.5885714,2.99142857 C14.5885714,1.37142857 13.2771429,0.06 11.6571429,0.06 C10.0371429,0.06 8.72571429,1.37142857 8.72571429,2.99142857 C8.72571429,3.17142857 8.88,3.32571429 9.03428571,3.32571429 Z M21.66,10.9371429 C21.3,10.86 16.4142857,8.98285714 13.2257143,7.72285714 C13.0714286,7.64571429 12.8657143,7.74857143 12.8142857,7.90285714 C12.7371429,8.05714286 12.84,8.26285714 12.9942857,8.31428571 C13.8171429,8.62285714 20.9914286,11.4514286 21.5314286,11.5542857 C22.1742857,11.6828571 22.6628571,12.2742857 22.6628571,12.9428571 C22.6628571,13.7142857 22.02,14.3571429 21.2485714,14.3571429 L2.09142857,14.3571429 C1.32,14.3571429 0.677142857,13.7142857 0.677142857,12.9428571 C0.677142857,12.2742857 1.14,11.6828571 1.80857143,11.5542857 C2.32285714,11.4514286 9.52285714,8.62285714 10.3457143,8.31428571 C10.5,8.23714286 10.6028571,8.05714286 10.5257143,7.90285714 C10.4485714,7.74857143 10.2685714,7.64571429 10.1142857,7.72285714 C6.92571429,8.98285714 2.06571429,10.86 1.68,10.9371429 C0.728571429,11.1428571 0.0342857143,11.9914286 0.0342857143,12.9428571 C0.0342857143,14.0742857 0.96,15 2.09142857,15 L21.2485714,15 C22.38,15 23.3057143,14.0742857 23.3057143,12.9428571 C23.3057143,11.9914286 22.6114286,11.1428571 21.66,10.9371429 Z"
+											id="Shape"></path>
+									</g>
+								</g>
+							</g>
+						</g>
+					</svg>
+					<span>Provador Virtual</span>
+				</a>
+
+				<a class="cta-open-tabela btn-type-provador">
+					<svg class="d-none d-md-inline-block" width="23px" height="15px" viewBox="0 0 23 15" version="1.1"
+						xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<g id="Desktop-Produto" transform="translate(-1094.000000, -575.000000)" fill="#DBA78E"
+								fill-rule="nonzero">
+								<g id="Group-21" transform="translate(883.000000, 562.000000)">
+									<g id="Group-18-Copy" transform="translate(190.000000, 0.000000)">
+										<g id="download" transform="translate(21.000000, 13.000000)">
+											<path
+												d="M14.987526,0.0187110187 C10.887617,0.0187110187 7.5031185,2.04941012 7.5031185,4.6964657 C7.5031185,7.34352127 10.887617,9.37422037 14.987526,9.37422037 C19.087435,9.37422037 22.4719335,7.34352127 22.4719335,4.6964657 C22.4719335,2.04941012 19.087435,0.0187110187 14.987526,0.0187110187 Z M14.987526,0.954261954 C18.6379747,0.954261954 21.5363825,2.69330664 21.5363825,4.6964657 C21.5363825,6.69962475 18.6379747,8.43866944 14.987526,8.43866944 C11.3370773,8.43866944 8.43866944,6.69962475 8.43866944,4.6964657 C8.43866944,2.69330664 11.3370773,0.954261954 14.987526,0.954261954 Z"
+												id="Oval"></path>
+											<path
+												d="M14.987526,2.82536383 C12.9471397,2.82536383 11.2453222,3.55471417 11.2453222,4.6964657 C11.2453222,5.83821722 12.9471397,6.56756757 14.987526,6.56756757 C17.0279122,6.56756757 18.7297297,5.83821722 18.7297297,4.6964657 C18.7297297,3.55471417 17.0279122,2.82536383 14.987526,2.82536383 Z M14.987526,3.76091476 C15.8076466,3.76091476 16.570472,3.89919245 17.1186306,4.13411758 C17.5757084,4.33000803 17.7941788,4.55137465 17.7941788,4.6964657 C17.7941788,4.84155674 17.5757084,5.06292337 17.1186306,5.25881382 C16.570472,5.49373894 15.8076466,5.63201663 14.987526,5.63201663 C14.1674054,5.63201663 13.40458,5.49373894 12.8564213,5.25881382 C12.3993436,5.06292337 12.1808732,4.84155674 12.1808732,4.6964657 C12.1808732,4.55137465 12.3993436,4.33000803 12.8564213,4.13411758 C13.40458,3.89919245 14.1674054,3.76091476 14.987526,3.76091476 Z"
+												id="Oval"></path>
+											<path
+												d="M22.4719335,4.6964657 L22.4719335,10.4680245 C22.4719335,12.3213054 21.209469,13.5655705 19.0963293,14.2809434 C17.6628374,14.7662314 15.9262528,14.9795722 14.3020419,14.9873073 L14.2102283,14.987526 L0.0187110187,14.987526 L0.0187110187,8.43866944 L14.0519519,8.43866944 L14.0519519,9.37422037 L0.954243243,9.37418919 L0.954243243,14.0519189 L14.2102283,14.0519751 C15.7374966,14.0519751 17.3838928,13.8587363 18.7182104,13.420836 L18.7963364,13.3947945 C20.5533329,12.7999888 21.5169955,11.8615867 21.5360931,10.5091347 L21.5363825,10.4680245 L21.5363825,4.6964657 L22.4719335,4.6964657 Z"
+												id="Path"></path>
+											<polygon id="Path"
+												points="8.5031185 4.6964657 8.5031185 8.90644491 7.5031185 8.90644491 7.5031185 4.6964657">
+											</polygon>
+											<polygon id="Path"
+												points="2.88981289 13.1164241 2.88981289 14.5197505 1.88981289 14.5197505 1.88981289 13.1164241">
+											</polygon>
+											<polygon id="Path"
+												points="4.76091476 12.1808732 4.76091476 14.5197505 3.76091476 14.5197505 3.76091476 12.1808732">
+											</polygon>
+											<polygon id="Path"
+												points="6.63201663 13.1164241 6.63201663 14.5197505 5.63201663 14.5197505 5.63201663 13.1164241">
+											</polygon>
+											<polygon id="Path"
+												points="8.5031185 12.1808732 8.5031185 14.5197505 7.5031185 14.5197505 7.5031185 12.1808732">
+											</polygon>
+											<polygon id="Path"
+												points="10.3742204 13.1164241 10.3742204 14.5197505 9.37422037 14.5197505 9.37422037 13.1164241">
+											</polygon>
+											<polygon id="Path"
+												points="12.2453222 12.1808732 12.2453222 14.5197505 11.2453222 14.5197505 11.2453222 12.1808732">
+											</polygon>
+											<polygon id="Path"
+												points="14.1164241 13.1164241 14.1164241 14.5197505 13.1164241 14.5197505 13.1164241 13.1164241">
+											</polygon>
+											<polygon id="Path"
+												points="15.987526 12.1808732 15.987526 14.5197505 14.987526 14.5197505 14.987526 12.1808732">
+											</polygon>
+											<polygon id="Path"
+												points="17.8586279 13.1164241 17.8586279 14.5197505 16.8586279 14.5197505 16.8586279 13.1164241">
+											</polygon>
+											<polygon id="Path"
+												points="19.7297297 12.1808732 19.7297297 14.0519751 18.7297297 14.0519751 18.7297297 12.1808732">
+											</polygon>
+										</g>
+									</g>
+								</g>
+							</g>
+						</g>
+					</svg>
+					Tabela de Medidas
+				</a>
+			</div>
+
+			{{ productHelper.bonus() }}
+
+			<form id="form_comprar" class="border-0" method="post" data-app="product.buy-form"
+				action="{{ links.cart_add ~ product.id }}">
+
+				<div id="product-price-helper" class="my-4  text-center">
+					{{ productHelper.pricing() }}
+				</div>
+				<div id="product-variant-helper" class=" text-center">
+					{{ productHelper.variants() }}
+				</div>
+				<div id="product-gifts-helper">
+					{{ productHelper.gifts() }}
+				</div>
+				<div id="product-gifts-helper" class="p1 tc1">
+					{{ product.additional_information }}
+				</div>
+				<div>
+					<span id="span_erro_variacao" class="blocoAlerta blocoNenza" style="display:none;">Selecione uma
+						opção para variação do produto</span>
+
+					{% element 'snippets/alpix_botoes_qty' %}
+
+					{#{{ productHelper.form() }}#}
+				</div>
+				{{ productHelper.kit() }}
+				{% if not product.upon_request and product.available %}
+				{{ productHelper.wishlist() }}
+				{% endif %}
+
+				{% if product.additional_message %}
+				<div class="additional-message  text-center">
+					{{ product.additional_message }}
+				</div>
+				{% endif %}
+
+			</form>
+			{% if productHelper.shipping() and not product.upon_request %}
+			<div class="product-shipping-helper mt-4 ">
+				{{ productHelper.shipping() }}
+				<form class="custom-frete new-frete">
+					<div class="row d-flex align-items-center justify-content-center no-outline">
+						<div class="col-12 col-md-auto pt-2 pb-2 py-md-0">
+							<span class="text font-weight-bold ml-0 ml-md-3 tc5">Frete e Prazo:</span>
+						</div>
+						<div class="col col-md">
+							<input type="tel" class="split_cep border-0 py-2 pl-2 pl-md-0 py-md-0" name="number-frete" minlength="9"
+								required maxlength="9" placeholder="00000-000">
+						</div>
+						<div class="col-auto">
+							<button type="submit"
+								class=" transition opacity submit-frete font-weight-bold w100 text-center text-uppercase border-0 tc-white py-2 py-md-3 px-4">Calcular</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="product-shipping-result"></div>
+			{% endif %}
+			{% if settings.social_position == 1 %}
+			<div class="product-social">
+				{{ productHelper.social() }}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+{% if product.description_small %}
+<div id="prod-desc-small">
+	<div>
+		{{product.description_small}}
+	</div>
+</div>
+{% endif %}
+<div class="py-0 py-md-2"></div>
+
+
+{% set show_tab_formas = settings.tabs_to_show|default(['#descricao','#coments'])%}
+<section id="ProdBlock" class="product-tabs my-5">
+	<a name="formaPagto"></a>
+	<div class="abasProduto tab-panel">
+		<ul class="list-inline">
+			{% for key, tab in productTabs %}
+			{% if tab.container_id and tab.container_id %}
+			<li class="list-inline-item" id="{{ tab.id }}" {% if key=='description' %} class="aberta" {% endif %}>
+				<a href="#" class="p1 text-uppercase font-weight-bold mr-5 tc6" data-tab-container-id="{{ tab.container_id }}"
+					data-tab-url="{{ tab.url }}">{{ tab.description
+					}}</a>
+			</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div id="descricao" class="prodBox">
+		<div class="board">
+			<div class="board_htm description">
+				{{ product.description ? product.description : product.description_small }}
+			</div>
+		</div>
+	</div>
+
+	<div id="itensInclusos" class="prodBox">
+		<div class="board">
+			{{ product.included_items }}
+		</div>
+	</div>
+
+	<div id="coments" class="prodBox">
+		<div class="board">
+			{% element 'product/comments' %}
+		</div>
+	</div>
+
+	<div id="caracteristicas" class="prodBox">
+		<div class='board'>
+			{% element 'product/properties' %}
+		</div>
+	</div>
+
+	{{ productTabs.custom.content }}
+	{{ productTabs.downloads.content }}
+
+	<div id="garantia" class="prodBox">
+		<img class="loader" src="{{ tray.paths.system_image }}/big-loading.svg" />
+	</div>
+
+	{#{% if "#formasPagto" in show_tab_formas %}#}
+	<div data-app="product.payment-methods" id="formasPagto" class="prodBox"></div>
+
+	{#{% endif %}#}
+</section>
+
+<div class="py-0 py-md-3"></div>
+
+{% if productHelper.bundle() %}
+<section class="product-cross-sell">
+	<h2 class="block-header font-weight-bold text-center mt-5 mb-3 pt-4 text-uppercase">
+		{{ Translation('compre_junto') }}
+	</h2>
+	<div id="product-comprejunto">
+		{{ productHelper.bundle() }}
+	</div>
+</section>
+{% endif %}
+
+
+{% if product.related_products %}
+{% element 'snippets/alpix-product-listing' {
+"products": product.related_products,
+"showcase_title": "Produtos Relacionados",
+"slider_this": "",
+"product_list_type": settings.related_list_type|default(settings.product_list_type|default(1)),
+"custom_css" : "related_"
+} %}
+{% endif %}
+
+
+{% if 1 != 1 %}
+<div id="prognoos_ib"></div>
+{% if settings.history_position == 1 %}
+<section class="products-visited col-sm-12">
+	<h4>{{ Translation('confira_tambem') }}</h4>
+	<h3 class="related-title">{{ Translation('produtos_visitados') }}</h3>
+	{% element 'snippets/history' {
+	'store.id': store.id,
+	'pages.current': pages.current,
+	'category.id': category.id
+	} %}
+</section>
+{% endif %}
+{% endif %}
+{% if utils.is_mobile %}
+<div id="zoom_imagem_modal" class="modal" style="display: none;">
+	<div class="conteudo">
+		<div id="fechar">X</div>
+		<img src="">
+	</div>
+</div>
+{% endif %}
+{% if banner.bottom %}
+<div class="banner banner-bottom ">
+	{{ banner.bottom }}
+</div>
+{% endif %}
